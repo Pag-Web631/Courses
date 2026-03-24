@@ -1,0 +1,3166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursos Virtual - Área Personal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3135/3135755.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .navbar-left img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .navbar-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: #667eea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .role-badge {
+            background: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .role-badge.profesor {
+            background: #ff6b6b;
+        }
+
+        .btn-logout {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-logout:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+        }
+
+        /* CONTAINER */
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        /* SIDEBAR */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 30px;
+        }
+
+        .sidebar {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+            position: sticky;
+            top: 80px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #555;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: #667eea;
+            color: white;
+        }
+
+        /* CONTENIDO */
+        .content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: #667eea;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* TABS */
+        .tab-btn {
+            background: #f3f4f6;
+            border: none;
+            padding: 12px 20px;
+            margin-right: 8px;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .tab-btn:hover {
+            background: #e5e7eb;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .tab-content {
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* CARDS */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* TABLA */
+        .table-container {
+            overflow-x: auto;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-entregado {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-pendiente {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        /* BOTONES */
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+        }
+
+        .btn-secondary {
+            background: #764ba2;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #6a408a;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-small {
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+
+        .status-info {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-calificado {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-pendiente-calif {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        /* FORM */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .navbar {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .navbar-right {
+                width: 100%;
+                justify-content: flex-end;
+                flex-wrap: wrap;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="navbar-left">
+            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png" alt="Logo">
+            <div class="navbar-title">Cursos Virtual</div>
+        </div>
+        <div class="navbar-right">
+            <div class="user-info">
+                <div class="user-avatar" id="avatarInit">J</div>
+                <div>
+                    <div id="userName" style="font-weight: 600;">Usuario</div>
+                    <span class="role-badge" id="roleBadge">Estudiante</span>
+                </div>
+            </div>
+            <button class="btn-logout" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Salir
+            </button>
+        </div>
+    </nav>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="container">
+        <div class="main-layout">
+            <!-- SIDEBAR -->
+            <aside class="sidebar">
+                <ul class="sidebar-menu">
+                    <li><a class="menu-link active" onclick="showSection('dashboard')"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                    <li><a class="menu-link" onclick="showSection('cursos')"><i class="fas fa-book"></i> Mis Cursos</a></li>
+                    <li><a class="menu-link" onclick="showSection('tareas')"><i class="fas fa-tasks"></i> Tareas</a></li>
+                    <li><a class="menu-link" onclick="showSection('cuestionarios')"><i class="fas fa-list-check"></i> Cuestionarios</a></li>
+                    <li><a class="menu-link" onclick="showSection('foro')"><i class="fas fa-comments"></i> Foro</a></li>
+                    <li id="menuCalificaciones"><a class="menu-link" onclick="showSection('calificaciones')"><i class="fas fa-star"></i> Calificaciones</a></li>
+                    <li id="menuProfesor" style="display: none;"><a class="menu-link" onclick="showSection('profesor')"><i class="fas fa-chalkboard-user"></i> Panel Profesor</a></li>
+                </ul>
+            </aside>
+
+            <!-- CONTENIDO PRINCIPAL -->
+            <main class="content">
+                <!-- DASHBOARD -->
+                <section id="dashboard" class="section active">
+                    <h2 class="section-title"><i class="fas fa-chart-line"></i> Mi Dashboard</h2>
+                    <div class="cards-grid">
+                        <div class="card">
+                            <h3><i class="fas fa-book"></i> Cursos Inscritos</h3>
+                            <p id="cantidadCursos">0 cursos</p>
+                        </div>
+                        <div class="card">
+                            <h3><i class="fas fa-tasks"></i> Tareas Pendientes</h3>
+                            <p id="tareasPendientes">0 tareas</p>
+                        </div>
+                        <div class="card">
+                            <h3><i class="fas fa-star"></i> Mi Promedio</h3>
+                            <p id="promedio">0.0 / 5.0</p>
+                        </div>
+                        <div class="card">
+                            <h3><i class="fas fa-fire"></i> Racha</h3>
+                            <p id="racha">0 días consecutivos</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- MIS CURSOS -->
+                <section id="cursos" class="section">
+                    <h2 class="section-title"><i class="fas fa-book"></i> Mis Cursos</h2>
+                    <div id="profesorNewCurso" style="margin-bottom: 30px; display: none;">
+                        <button class="btn btn-primary" onclick="openModalCurso()"><i class="fas fa-plus"></i> Crear Nuevo Curso</button>
+                    </div>
+                    
+                    <!-- PARA ESTUDIANTES: Ver cursos disponibles -->
+                    <div id="seccionEstudianteCursos" style="display: none;">
+                        <h3 style="margin-bottom: 20px; color: #667eea; font-size: 1.1rem;">
+                            <i class="fas fa-book-open"></i> Cursos Disponibles para Inscribirse
+                        </h3>
+                        <div id="cursosDisponiblesContainer" class="cards-grid"></div>
+                    </div>
+
+                    <!-- PARA PROFESORES: Ver sus cursos -->
+                    <div id="seccionProfesorCursos" style="display: none;">
+                        <h3 style="margin-bottom: 20px; color: #667eea; font-size: 1.1rem;">
+                            <i class="fas fa-chalkboard"></i> Mis Cursos Creados
+                        </h3>
+                        <div id="misCursosProfesorContainer" class="cards-grid"></div>
+                    </div>
+
+                    <!-- FALLBACK: Contenedor genérico -->
+                    <div id="cursosContainer" class="cards-grid"></div>
+                </section>
+
+                <!-- TAREAS -->
+                <section id="tareas" class="section">
+                    <h2 class="section-title"><i class="fas fa-tasks"></i> Tareas</h2>
+                    <div id="profesorNewTarea" style="margin-bottom: 30px; display: none;">
+                        <button class="btn btn-primary" onclick="openModalTarea()"><i class="fas fa-plus"></i> Crear Nueva Tarea</button>
+                    </div>
+                    <div class="table-container">
+                        <table id="tareasTable">
+                            <thead>
+                                <tr>
+                                    <th>Curso</th>
+                                    <th>Tarea</th>
+                                    <th>Fecha Límite</th>
+                                    <th>Estado</th>
+                                    <th>Calificación</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tareasList"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- CUESTIONARIOS -->
+                <section id="cuestionarios" class="section">
+                    <h2 class="section-title"><i class="fas fa-list-check"></i> Cuestionarios</h2>
+                    <div id="profesorNewCuestionario" style="margin-bottom: 30px; display: none;">
+                        <button class="btn btn-primary" onclick="openModalCuestionario()"><i class="fas fa-plus"></i> Crear Cuestionario</button>
+                    </div>
+                    <div class="table-container">
+                        <table id="cuestionariosTable">
+                            <thead>
+                                <tr>
+                                    <th>Curso</th>
+                                    <th>Cuestionario</th>
+                                    <th>Fecha Límite</th>
+                                    <th>Tiempo Límite</th>
+                                    <th>Estado</th>
+                                    <th>Calificación</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cuestionariosList"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- FORO -->
+                <section id="foro" class="section">
+                    <h2 class="section-title"><i class="fas fa-comments"></i> Foro de Discusión</h2>
+                    <div style="margin-bottom: 30px;" id="foroNewTema">
+                        <button class="btn btn-primary" onclick="openModalForo()"><i class="fas fa-comment-dots"></i> Nuevo Tema</button>
+                    </div>
+                    <div id="foroContainer" style="display: grid; gap: 20px;"></div>
+                </section>
+
+                <!-- CALIFICACIONES -->
+                <section id="calificaciones" class="section">
+                    <h2 class="section-title"><i class="fas fa-star"></i> Mis Calificaciones</h2>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Curso</th>
+                                    <th>Calificación Final</th>
+                                    <th>Estado</th>
+                                    <th>Fecha Publicación</th>
+                                </tr>
+                            </thead>
+                            <tbody id="calificacionesTable"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- PANEL PROFESOR -->
+                <section id="profesor" class="section">
+                    <h2 class="section-title"><i class="fas fa-chalkboard-user"></i> Panel de Control - Profesor</h2>
+                    
+                    <!-- TABS DE NAVEGACIÓN -->
+                    <div style="display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 2px solid #e5e7eb; flex-wrap: wrap;">
+                        <button class="tab-btn active" onclick="mostrarTabProfesor('solicitudes')">
+                            <i class="fas fa-bell"></i> Solicitudes Pendientes
+                        </button>
+                        <button class="tab-btn" onclick="mostrarTabProfesor('estudiantes')">
+                            <i class="fas fa-users-check"></i> Estudiantes Aprobados
+                        </button>
+                        <button class="tab-btn" onclick="mostrarTabProfesor('cursos')">
+                            <i class="fas fa-book"></i> Mis Cursos
+                        </button>
+                        <button class="tab-btn" onclick="mostrarTabProfesor('entregas')">
+                            <i class="fas fa-file-upload"></i> Calificar Tareas
+                        </button>
+                        <button class="tab-btn" onclick="mostrarTabProfesor('herramientas')">
+                            <i class="fas fa-tools"></i> Herramientas
+                        </button>
+                        <button class="tab-btn" onclick="mostrarTabProfesor('calificacionesProfesor')">
+                            <i class="fas fa-star"></i> Publicar Notas
+                        </button>
+
+                    <!-- TAB: SOLICITUDES PENDIENTES -->
+                    <div id="tabSolicitudes" class="tab-content">
+                        <h3 style="margin: 30px 0 20px; font-size: 1.3rem; color: #667eea;"><i class="fas fa-bell"></i> Solicitudes de Inscripción Pendientes</h3>
+                        <div id="indiceSolicituddesContainer" style="display: grid; gap: 15px;"></div>
+                    </div>
+
+                    <!-- TAB: ESTUDIANTES APROBADOS -->
+                    <div id="tabEstudiantes" class="tab-content" style="display: none;">
+                        <h3 style="margin: 30px 0 20px; font-size: 1.3rem; color: #667eea;"><i class="fas fa-users-check"></i> Estudiantes Aprobados por Curso</h3>
+                        <div id="estudiantesApropadosContainer" style="display: grid; gap: 15px;"></div>
+                    </div>
+
+                    <!-- TAB: MIS CURSOS -->
+                    <div id="tabCursos" class="tab-content" style="display: none;">
+                        <h3 style="margin: 30px 0 20px; font-size: 1.3rem; color: #667eea;">Mis Cursos</h3>
+                        <div id="profesorCursos" class="cards-grid"></div>
+                    </div>
+
+                    <!-- TAB: ENTREGAS -->
+                    <div id="tabEntregas" class="tab-content" style="display: none;">
+                        <h3 style="margin: 30px 0 20px; font-size: 1.3rem; color: #667eea;">Entregas de Estudiantes</h3>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Estudiante</th>
+                                        <th>Curso</th>
+                                        <th>Tarea</th>
+                                        <th>Fecha Entrega</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="entregasTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- TAB: HERRAMIENTAS DEL PROFESOR -->
+                    <div id="tabHerramientas" class="tab-content" style="display: none;">
+                        <h3 style="margin: 30px 0 20px; font-size: 1.3rem; color: #667eea;"><i class="fas fa-tools"></i> Herramientas del Profesor</h3>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px;">
+                            <!-- Anuncios -->
+                            <div class="card" style="cursor: pointer;" onclick="mostrarSeccionHerramienta('anuncios')">
+                                <h4 style="margin-top: 0;"><i class="fas fa-bullhorn"></i> Anuncios</h4>
+                                <p style="margin: 0; opacity: 0.9;">Publica avisos importantes para tus estudiantes</p>
+                                <small style="display: block; margin-top: 10px; opacity: 0.7;">Click para gestionar</small>
+                            </div>
+
+                            <!-- Materiales -->
+                            <div class="card" style="cursor: pointer;" onclick="mostrarSeccionHerramienta('materiales')">
+                                <h4 style="margin-top: 0;"><i class="fas fa-file-alt"></i> Materiales</h4>
+                                <p style="margin: 0; opacity: 0.9;">Comparte documentos y recursos con estudiantes</p>
+                                <small style="display: block; margin-top: 10px; opacity: 0.7;">Click para gestionar</small>
+                            </div>
+
+                            <!-- Reportes -->
+                            <div class="card" style="cursor: pointer;" onclick="mostrarSeccionHerramienta('reportes')">
+                                <h4 style="margin-top: 0;"><i class="fas fa-chart-bar"></i> Reportes</h4>
+                                <p style="margin: 0; opacity: 0.9;">Genera reportes de calificaciones y desempeño</p>
+                                <small style="display: block; margin-top: 10px; opacity: 0.7;">Click para ver</small>
+                            </div>
+
+                            <!-- Mensajes -->
+                            <div class="card" style="cursor: pointer;" onclick="mostrarSeccionHerramienta('mensajes')">
+                                <h4 style="margin-top: 0;"><i class="fas fa-envelope"></i> Mensajes</h4>
+                                <p style="margin: 0; opacity: 0.9;">Comunícate con tus estudiantes</p>
+                                <small style="display: block; margin-top: 10px; opacity: 0.7;">Click para abrir</small>
+                            </div>
+
+                            <!-- Asistencia -->
+                            <div class="card" style="cursor: pointer;" onclick="mostrarSeccionHerramienta('asistencia')">
+                                <h4 style="margin-top: 0;"><i class="fas fa-clipboard-check"></i> Asistencia</h4>
+                                <p style="margin: 0; opacity: 0.9;">Registra la asistencia de estudiantes</p>
+                                <small style="display: block; margin-top: 10px; opacity: 0.7;">Click para marcar</small>
+                            </div>
+
+                            <!-- Configuración -->
+                            <div class="card" style="cursor: pointer;" onclick="mostrarSeccionHerramienta('configuracion')">
+                                <h4 style="margin-top: 0;"><i class="fas fa-cog"></i> Configuración</h4>
+                                <p style="margin: 0; opacity: 0.9;">Ajusta configuración de tus cursos</p>
+                                <small style="display: block; margin-top: 10px; opacity: 0.7;">Click para acceder</small>
+                            </div>
+                        </div>
+
+                        <!-- SECCIONES DE HERRAMIENTAS -->
+                        <div id="seccionHerramientaAnuncios" style="display: none;">
+                            <h4 style="border-bottom: 2px solid #667eea; padding-bottom: 10px; margin-bottom: 20px;">
+                                <i class="fas fa-bullhorn"></i> Gestión de Anuncios
+                            </h4>
+                            <button class="btn btn-primary" onclick="openModalAnuncio()" style="margin-bottom: 20px;">
+                                <i class="fas fa-plus"></i> Nuevo Anuncio
+                            </button>
+                            <div id="anunciosContainer" style="display: grid; gap: 15px;"></div>
+                        </div>
+
+                        <div id="seccionHerramientaMateriales" style="display: none;">
+                            <h4 style="border-bottom: 2px solid #667eea; padding-bottom: 10px; margin-bottom: 20px;">
+                                <i class="fas fa-file-alt"></i> Gestión de Materiales
+                            </h4>
+                            <button class="btn btn-primary" onclick="openModalMaterial()" style="margin-bottom: 20px;">
+                                <i class="fas fa-plus"></i> Subir Material
+                            </button>
+                            <div id="materialesContainer" style="display: grid; gap: 15px;"></div>
+                        </div>
+
+                        <div id="seccionHerramientaReportes" style="display: none;">
+                            <h4 style="border-bottom: 2px solid #667eea; padding-bottom: 10px; margin-bottom: 20px;">
+                                <i class="fas fa-chart-bar"></i> Reportes
+                            </h4>
+                            <div id="reportesContainer"></div>
+                        </div>
+
+                        <div id="seccionHerramientaMensajes" style="display: none;">
+                            <h4 style="border-bottom: 2px solid #667eea; padding-bottom: 10px; margin-bottom: 20px;">
+                                <i class="fas fa-envelope"></i> Mensajes
+                            </h4>
+                            <button class="btn btn-primary" onclick="openModalMensaje()" style="margin-bottom: 20px;">
+                                <i class="fas fa-envelope"></i> Nuevo Mensaje
+                            </button>
+                            <div id="mensajesContainer" style="display: grid; gap: 15px;"></div>
+                        </div>
+
+                        <div id="seccionHerramientaAsistencia" style="display: none;">
+                            <h4 style="border-bottom: 2px solid #667eea; padding-bottom: 10px; margin-bottom: 20px;">
+                                <i class="fas fa-clipboard-check"></i> Control de Asistencia
+                            </h4>
+                            <div id="asistenciaContainer"></div>
+                        </div>
+
+                        <div id="seccionHerramientaConfiguracion" style="display: none;">
+                            <h4 style="border-bottom: 2px solid #667eea; padding-bottom: 10px; margin-bottom: 20px;">
+                                <i class="fas fa-cog"></i> Configuración
+                            </h4>
+                            <div id="configuracionContainer" style="padding: 20px; background: #f3f4f6; border-radius: 8px;">
+                                <p><strong>Panel de Configuración</strong></p>
+                                <ul style="margin: 15px 0; line-height: 2;">
+                                    <li><label><input type="checkbox"> Permitir entregas tarde</label></li>
+                                    <li><label><input type="checkbox"> Permitir reclamos de calificaciones</label></li>
+                                    <li><label><input type="checkbox"> Mostrar calificaciones a estudiantes</label></li>
+                                    <li><label><input type="checkbox"> Permitir comentarios en tareas</label></li>
+                                </ul>
+                                <button class="btn btn-primary" style="margin-top: 15px;">Guardar Cambios</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB: PUBLICAR NOTAS -->
+                    <div id="tabCalificacionesProfesor" class="tab-content" style="display: none;">
+                        <h3 style="margin: 30px 0 20px; font-size: 1.3rem; color: #667eea;">
+                            <i class="fas fa-star"></i> Publicar Notas de Estudiantes
+                        </h3>
+                        <button class="btn btn-primary" onclick="openModalPublicarNotas()" style="margin-bottom: 20px;">
+                            <i class="fas fa-plus"></i> Publicar Nota
+                        </button>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Curso</th>
+                                        <th>Estudiante</th>
+                                        <th>Calificación</th>
+                                        <th>Fecha Publicación</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="notasPublicadasTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- MODALES -->
+    <!-- MODAL CURSO -->
+    <div id="modalCurso" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-book"></i> Crear Curso</h3>
+                <button class="close-btn" onclick="closeModal('modalCurso')">&times;</button>
+            </div>
+            <form onsubmit="crearCurso(event)">
+                <div class="form-group">
+                    <label for="nombreCurso">Nombre del Curso</label>
+                    <input type="text" id="nombreCurso" required>
+                </div>
+                <div class="form-group">
+                    <label for="descripcionCurso">Descripción</label>
+                    <textarea id="descripcionCurso" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="capacidadCurso">Capacidad de Estudiantes</label>
+                    <input type="number" id="capacidadCurso" min="1" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fas fa-save"></i> Crear Curso</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL TAREA -->
+    <div id="modalTarea" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-tasks"></i> Crear Tarea</h3>
+                <button class="close-btn" onclick="closeModal('modalTarea')">&times;</button>
+            </div>
+            <form onsubmit="crearTarea(event)">
+                <div class="form-group">
+                    <label for="cursoDeTarea">Selecciona el Curso</label>
+                    <select id="cursoDeTarea" required>
+                        <option value="">-- Seleccionar --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="nombreTarea">Nombre de la Tarea</label>
+                    <input type="text" id="nombreTarea" required>
+                </div>
+                <div class="form-group">
+                    <label for="descripcionTarea">Descripción</label>
+                    <textarea id="descripcionTarea" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="fechaLimiteTarea">Fecha Límite</label>
+                    <input type="date" id="fechaLimiteTarea" required>
+                </div>
+                <div class="form-group">
+                    <label for="puntajeTarea">Puntaje Máximo</label>
+                    <input type="number" id="puntajeTarea" min="1" max="100" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fas fa-save"></i> Crear Tarea</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL CUESTIONARIO -->
+    <div id="modalCuestionario" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-list-check"></i> Crear Cuestionario</h3>
+                <button class="close-btn" onclick="closeModal('modalCuestionario')">&times;</button>
+            </div>
+            <form onsubmit="crearCuestionario(event)">
+                <div class="form-group">
+                    <label for="cursoDeCuestionario">Selecciona el Curso</label>
+                    <select id="cursoDeCuestionario" required>
+                        <option value="">-- Seleccionar --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="nombreCuestionario">Nombre del Cuestionario</label>
+                    <input type="text" id="nombreCuestionario" required>
+                </div>
+                <div class="form-group">
+                    <label for="tiempoLimiteCuestionario">Tiempo Límite (minutos)</label>
+                    <input type="number" id="tiempoLimiteCuestionario" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="puntajeCuestionario">Puntaje Máximo</label>
+                    <input type="number" id="puntajeCuestionario" min="1" max="100" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fas fa-save"></i> Crear Cuestionario</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL FORO -->
+    <div id="modalForo" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-comment-dots"></i> Nuevo Tema</h3>
+                <button class="close-btn" onclick="closeModal('modalForo')">&times;</button>
+            </div>
+            <form onsubmit="crearTemaForo(event)">
+                <div class="form-group">
+                    <label for="cursoForo">Selecciona el Curso</label>
+                    <select id="cursoForo" required>
+                        <option value="">-- Seleccionar --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="temaForo">Título del Tema</label>
+                    <input type="text" id="temaForo" required>
+                </div>
+                <div class="form-group">
+                    <label for="mensajeForo">Tu Mensaje</label>
+                    <textarea id="mensajeForo" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fas fa-send"></i> Publicar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL ENTREGAR ARCHIVO -->
+    <div id="modalEntregarArchivo" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-upload"></i> Entregar Tarea</h3>
+                <button class="close-btn" onclick="closeModal('modalEntregarArchivo')">&times;</button>
+            </div>
+            <form onsubmit="entregarTarea(event)">
+                <div class="form-group">
+                    <label for="archivoTarea">Selecciona tu Archivo</label>
+                    <input type="file" id="archivoTarea" required>
+                </div>
+                <div class="form-group">
+                    <label for="comentarioEntrega">Comentarios (Opcional)</label>
+                    <textarea id="comentarioEntrega" placeholder="Describe lo que entregaste..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fas fa-check"></i> Entregar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL VER ENTREGAS -->
+    <div id="modalVerEntregas" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-file-pdf"></i> Entregas de Estudiantes</h3>
+                <button class="close-btn" onclick="closeModal('modalVerEntregas')">&times;</button>
+            </div>
+            <div id="entregasContent" style="max-height: 400px; overflow-y: auto;"></div>
+        </div>
+    </div>
+
+    <!-- MODAL REALIZAR CUESTIONARIO -->
+    <div id="modalRealizarCuestionario" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-clipboard-list"></i> Realizar Cuestionario</h3>
+                <button class="close-btn" onclick="closeModal('modalRealizarCuestionario')">&times;</button>
+            </div>
+            <form onsubmit="enviarCuestionario(event)">
+                <div id="cuestionarioContent"></div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 20px;"><i class="fas fa-paper-plane"></i> Enviar Respuestas</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL RESPONDER FORO -->
+    <div id="modalResponderForo" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-reply"></i> Responder Tema</h3>
+                <button class="close-btn" onclick="closeModal('modalResponderForo')">&times;</button>
+            </div>
+            <div id="temaForoContent" style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin-bottom: 20px; max-height: 200px; overflow-y: auto;"></div>
+            <form onsubmit="guardarRespuestaForo(event)">
+                <div class="form-group">
+                    <label for="respuestaForo">Tu Respuesta</label>
+                    <textarea id="respuestaForo" required style="min-height: 120px;"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fas fa-send"></i> Publicar Respuesta</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let userEmail = localStorage.getItem('userEmail') || 'usuario@email.com';
+        let userRole = localStorage.getItem('userRole') || 'estudiante';
+        let cursos = JSON.parse(localStorage.getItem('cursos')) || [];
+        let tareas = JSON.parse(localStorage.getItem('tareas')) || [];
+        let cuestionarios = JSON.parse(localStorage.getItem('cuestionarios')) || [];
+        let foroTemas = JSON.parse(localStorage.getItem('foroTemas')) || [];
+
+        // INICIALIZAR LA APLICACIÓN
+        window.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        function initializeApp() {
+            // Limpiar datos de prueba al iniciar
+            limpiarDatos();
+            
+            updateUserInfo();
+            showSection('dashboard');
+            if (userRole === 'profesor') {
+                document.getElementById('menuProfesor').style.display = 'block';
+                document.getElementById('profesorNewCurso').style.display = 'block';
+                document.getElementById('profesorNewTarea').style.display = 'block';
+                document.getElementById('profesorNewCuestionario').style.display = 'block';
+                document.getElementById('menuCalificaciones').style.display = 'block';
+            } else {
+                document.getElementById('menuCalificaciones').style.display = 'block';
+            }
+            loadCursos();
+            loadTareas();
+            loadCuestionarios();
+            loadForo();
+            loadCalificaciones();
+            actualizarDashboard();
+        }
+
+        function limpiarDatos() {
+            // Obtener datos actuales del localStorage
+            const cursosActuales = JSON.parse(localStorage.getItem('cursos')) || [];
+            const tareasActuales = JSON.parse(localStorage.getItem('tareas')) || [];
+            const cuestionariosActuales = JSON.parse(localStorage.getItem('cuestionarios')) || [];
+            const foroActual = JSON.parse(localStorage.getItem('foroTemas')) || [];
+            const inscripcionesActuales = JSON.parse(localStorage.getItem('inscripciones')) || [];
+            const entregasActuales = JSON.parse(localStorage.getItem('entregas')) || [];
+
+            // Filtrar solo datos del usuario actual
+            const cursosFiltrados = cursosActuales.filter(c => c.profesor === userEmail);
+            const tareasFiltradas = tareasActuales.filter(t => t.profesor === userEmail);
+            const cuestionariosFiltrados = cuestionariosActuales.filter(c => c.profesor === userEmail);
+            const foroFiltrado = foroActual.filter(f => f.profesor === userEmail);
+            const inscripcionesFiltradas = inscripcionesActuales.filter(i => 
+                cursosFiltrados.some(c => c.id === i.cursoId) || i.estudiante === userEmail
+            );
+            const entregasFiltradas = entregasActuales.filter(e =>
+                tareasFiltradas.some(t => t.id === e.tareaId)
+            );
+
+            // Guardar solo datos del usuario actual
+            localStorage.setItem('cursos', JSON.stringify(cursosFiltrados));
+            localStorage.setItem('tareas', JSON.stringify(tareasFiltradas));
+            localStorage.setItem('cuestionarios', JSON.stringify(cuestionariosFiltrados));
+            localStorage.setItem('foroTemas', JSON.stringify(foroFiltrado));
+            localStorage.setItem('inscripciones', JSON.stringify(inscripcionesFiltradas));
+            localStorage.setItem('entregas', JSON.stringify(entregasFiltradas));
+
+            // Actualizar variables globales
+            cursos = cursosFiltrados;
+            tareas = tareasFiltradas;
+            cuestionarios = cuestionariosFiltrados;
+            foroTemas = foroFiltrado;
+        }
+
+        function actualizarDashboard() {
+            if (userRole === 'profesor') {
+                // Dashboard para profesor
+                const misCursos = cursos.filter(c => c.profesor === userEmail);
+                const misTareas = tareas.filter(t => t.profesor === userEmail);
+                document.getElementById('cantidadCursos').textContent = misCursos.length + ' curso(s) creado(s)';
+                document.getElementById('tareasPendientes').textContent = misTareas.length + ' tarea(s) creada(s)';
+            } else {
+                // Dashboard para estudiante
+                const inscripciones = JSON.parse(localStorage.getItem('inscripciones') || '[]');
+                const misInscripciones = inscripciones.filter(i => i.estudiante === userEmail);
+                const cursosInscritos = misInscripciones.map(i => i.cursoId);
+                const misTareas = tareas.filter(t => cursosInscritos.includes(t.curso));
+                document.getElementById('cantidadCursos').textContent = misInscripciones.length + ' curso(s) inscrito(s)';
+                document.getElementById('tareasPendientes').textContent = misTareas.length + ' tarea(s) pendiente(s)';
+            }
+        }
+
+
+
+        function updateUserInfo() {
+            const email = userEmail.split('@')[0];
+            document.getElementById('userName').textContent = email.toUpperCase();
+            document.getElementById('avatarInit').textContent = email.charAt(0).toUpperCase();
+            document.getElementById('roleBadge').textContent = userRole === 'profesor' ? 'PROFESOR' : 'ESTUDIANTE';
+            document.getElementById('roleBadge').className = 'role-badge' + (userRole === 'profesor' ? ' profesor' : '');
+        }
+
+        function showSection(sectionId) {
+            // VALIDACIÓN: Prevenir que estudiantes accedan a la sección de profesor
+            if (sectionId === 'profesor' && userRole !== 'profesor') {
+                alert('❌ Acceso denegado. Solo los profesores pueden acceder al panel de control.');
+                return;
+            }
+            
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            document.querySelectorAll('.menu-link').forEach(m => m.classList.remove('active'));
+            event.target.closest('.menu-link').classList.add('active');
+            
+            // Actualizar datos según la sección
+            if (sectionId === 'dashboard') {
+                actualizarDashboard();
+            } else if (sectionId === 'cursos') {
+                loadCursos();
+            } else if (sectionId === 'profesor' && userRole === 'profesor') {
+                mostrarTabProfesor('solicitudes');
+            }
+        }
+
+        function mostrarTabProfesor(tabName) {
+            // VALIDACIÓN: Solo profesores pueden acceder
+            if (userRole !== 'profesor') {
+                alert('❌ Acceso denegado. Solo los profesores pueden acceder a esta sección.');
+                return;
+            }
+            
+            // Ocultar todos los tabs
+            document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Mostrar el tab seleccionado
+            const tabElement = document.getElementById('tab' + tabName.charAt(0).toUpperCase() + tabName.slice(1));
+            if (tabElement) {
+                tabElement.style.display = 'block';
+            }
+            
+            // Marcar botón como activo
+            event.target.classList.add('active');
+            
+            // Cargar datos según el tab
+            if (tabName === 'solicitudes') {
+                loadIndicesSolicitudes();
+            } else if (tabName === 'estudiantes') {
+                loadEstudiantesAprobados();
+            } else if (tabName === 'cursos') {
+                loadProfesorCursos();
+            } else if (tabName === 'entregas') {
+                loadProfesorEntregas();
+            }
+        }
+
+        function loadEstudiantesAprobados() {
+            const container = document.getElementById('estudiantesApropadosContainer');
+            container.innerHTML = '';
+            
+            const inscripciones = JSON.parse(localStorage.getItem('inscripciones') || '[]');
+            const misCursos = cursos.filter(c => c.profesor === userEmail);
+            
+            // Obtener estudiantes aprobados agrupados por curso
+            let estudiantesPorCurso = {};
+            misCursos.forEach(curso => {
+                const estudiantesCurso = inscripciones.filter(i => i.cursoId == curso.id && i.estado === 'aprobado');
+                if (estudiantesCurso.length > 0) {
+                    estudiantesPorCurso[curso.id] = {
+                        nombre: curso.nombre,
+                        estudiantes: estudiantesCurso
+                    };
+                }
+            });
+            
+            if (Object.keys(estudiantesPorCurso).length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 30px; background: #f0fdf4; border-radius: 8px; border-left: 4px solid #22c55e;">
+                        <i class="fas fa-inbox" style="font-size: 2rem; color: #22c55e; margin-bottom: 10px; display: block;"></i>
+                        <p style="color: #22c55e; font-weight: 600;">No hay estudiantes aprobados aún</p>
+                    </div>
+                `;
+            } else {
+                Object.keys(estudiantesPorCurso).forEach(cursoId => {
+                    const curso = estudiantesPorCurso[cursoId];
+                    
+                    const card = document.createElement('div');
+                    card.style.cssText = `
+                        padding: 20px;
+                        background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+                        border-radius: 8px;
+                        border-left: 4px solid #22c55e;
+                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                    `;
+                    
+                    let estudiantesHTML = '<ul style="margin: 0; padding-left: 20px;">';
+                    curso.estudiantes.forEach(est => {
+                        estudiantesHTML += `
+                            <li style="padding: 8px 0; color: #166534; display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <strong>${est.estudiante}</strong>
+                                    <br/>
+                                    <small style="opacity: 0.75;">Aprobado: ${est.fecha}</small>
+                                </div>
+                                <button class="btn btn-danger btn-small" onclick="desaprobarEstudiante(${est.id})">
+                                    <i class="fas fa-ban"></i> Remover
+                                </button>
+                            </li>
+                        `;
+                    });
+                    estudiantesHTML += '</ul>';
+                    
+                    card.innerHTML = `
+                        <h4 style="margin: 0 0 15px 0; color: #166534; display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-book"></i> ${curso.nombre}
+                        </h4>
+                        <p style="margin: 0 0 15px 0; color: #166534; font-weight: 600;">
+                            ${curso.estudiantes.length} estudiante(s) aprobado(s)
+                        </p>
+                        ${estudiantesHTML}
+                    `;
+                    
+                    container.appendChild(card);
+                });
+            }
+        }
+
+        function desaprobarEstudiante(inscripcionId) {
+            if (confirm('¿Deseas remover este estudiante del curso?')) {
+                const inscripciones = JSON.parse(localStorage.getItem('inscripciones') || '[]');
+                const inscripcion = inscripciones.find(i => i.id == inscripcionId);
+                
+                if (inscripcion) {
+                    inscripcion.estado = 'rechazado';
+                    localStorage.setItem('inscripciones', JSON.stringify(inscripciones));
+                    alert(`✗ Estudiante ${inscripcion.estudiante} removido del curso`);
+                    loadEstudiantesAprobados();
+                }
+            }
+        }
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            document.querySelectorAll('.menu-link').forEach(m => m.classList.remove('active'));
+            event.target.closest('.menu-link').classList.add('active');
+            
+            // Actualizar datos según la sección
+            if (sectionId === 'dashboard') {
+                actualizarDashboard();
+            } else if (sectionId === 'cursos') {
+                loadCursos();
+            } else if (sectionId === 'profesor' && userRole === 'profesor') {
+                mostrarTabProfesor('solicitudes');
+            }
+        }
+
+        function openModalCurso() {
+            document.getElementById('modalCurso').classList.add('active');
+        }
+
+        function openModalTarea() {
+            document.getElementById('modalTarea').classList.add('active');
+            updateSelectCursos('cursoDeTarea');
+        }
+
+        function openModalCuestionario() {
+            document.getElementById('modalCuestionario').classList.add('active');
+            updateSelectCursos('cursoDeCuestionario');
+        }
+
+        function openModalForo() {
+            document.getElementById('modalForo').classList.add('active');
+            updateSelectCursos('cursoForo');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+            }
+        }
+
+        function crearCurso(event) {
+            event.preventDefault();
+            const curso = {
+                id: Date.now(),
+                nombre: document.getElementById('nombreCurso').value,
+                descripcion: document.getElementById('descripcionCurso').value,
+                capacidad: document.getElementById('capacidadCurso').value,
+                profesor: userEmail,
+                fecha: new Date().toLocaleDateString('es-ES')
+            };
+            cursos.push(curso);
+            localStorage.setItem('cursos', JSON.stringify(cursos));
+            closeModal('modalCurso');
+            document.getElementById('nombreCurso').value = '';
+            document.getElementById('descripcionCurso').value = '';
+            document.getElementById('capacidadCurso').value = '';
+            loadCursos();
+            alert('✅ Curso creado exitosamente');
+        }
+
+        function crearTarea(event) {
+            event.preventDefault();
+            const tarea = {
+                id: Date.now(),
+                curso: document.getElementById('cursoDeTarea').value,
+                nombre: document.getElementById('nombreTarea').value,
+                descripcion: document.getElementById('descripcionTarea').value,
+                fechaLimite: document.getElementById('fechaLimiteTarea').value,
+                puntaje: document.getElementById('puntajeTarea').value,
+                profesor: userEmail,
+                estado: 'pendiente'
+            };
+            tareas.push(tarea);
+            localStorage.setItem('tareas', JSON.stringify(tareas));
+            closeModal('modalTarea');
+            loadTareas();
+            alert('✅ Tarea creada exitosamente');
+        }
+
+        function crearCuestionario(event) {
+            event.preventDefault();
+            const cuestionario = {
+                id: Date.now(),
+                curso: document.getElementById('cursoDeCuestionario').value,
+                nombre: document.getElementById('nombreCuestionario').value,
+                tiempoLimite: document.getElementById('tiempoLimiteCuestionario').value,
+                puntaje: document.getElementById('puntajeCuestionario').value,
+                profesor: userEmail,
+                fecha: new Date().toLocaleDateString('es-ES')
+            };
+            cuestionarios.push(cuestionario);
+            localStorage.setItem('cuestionarios', JSON.stringify(cuestionarios));
+            closeModal('modalCuestionario');
+            loadCuestionarios();
+            alert('✅ Cuestionario creado exitosamente');
+        }
+
+        function crearTemaForo(event) {
+            event.preventDefault();
+            const tema = {
+                id: Date.now(),
+                curso: document.getElementById('cursoForo').value,
+                titulo: document.getElementById('temaForo').value,
+                mensaje: document.getElementById('mensajeForo').value,
+                autor: userEmail,
+                fecha: new Date().toLocaleDateString('es-ES'),
+                respuestas: []
+            };
+            foroTemas.push(tema);
+            localStorage.setItem('foroTemas', JSON.stringify(foroTemas));
+            closeModal('modalForo');
+            loadForo();
+            alert('✅ Tema publicado exitosamente');
+        }
+
+        function loadCursos() {
+            if (userRole === 'profesor') {
+                // MOSTRAR VISTA DE PROFESOR
+                document.getElementById('seccionProfesorCursos').style.display = 'block';
+                document.getElementById('seccionEstudianteCursos').style.display = 'none';
+                loadCursosProfesor();
+            } else {
+                // MOSTRAR VISTA DE ESTUDIANTE
+                document.getElementById('seccionEstudianteCursos').style.display = 'block';
+                document.getElementById('seccionProfesorCursos').style.display = 'none';
+                loadCursosEstudiante();
+            }
+        }
+
+        function loadCursosProfesor() {
+            const container = document.getElementById('misCursosProfesorContainer');
+            const selectCursos = document.querySelectorAll('select');
+            
+            container.innerHTML = '';
+            selectCursos.forEach(select => {
+                select.innerHTML = '<option value="">-- Seleccionar --</option>';
+            });
+
+            // Filtrar solo los cursos del profesor actual
+            const misCursos = cursos.filter(c => c.profesor === userEmail);
+
+            if (misCursos.length === 0) {
+                container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #999; padding: 40px;"><i class="fas fa-inbox"></i> No has creado ningún curso aún. <a href="#" onclick="openModalCurso(); return false;" style="color: #667eea; text-decoration: underline;">Crear uno ahora</a></p>';
+            } else {
+                misCursos.forEach(curso => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    const tareasDelCurso = tareas.filter(t => t.curso == curso.id && t.profesor === userEmail).length;
+                    
+                    // Contar estudiantes aprobados
+                    const inscripciones = JSON.parse(localStorage.getItem('inscripciones') || '[]');
+                    const estudiantesAprobados = inscripciones.filter(i => i.cursoId == curso.id && i.estado === 'aprobado').length;
+                    const solicitudesPendientes = inscripciones.filter(i => i.cursoId == curso.id && i.estado === 'pendiente').length;
+                    
+                    card.innerHTML = `
+                        <h3><i class="fas fa-book"></i> ${curso.nombre}</h3>
+                        <p>${curso.descripcion}</p>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; font-size: 0.9rem;">
+                            <div><i class="fas fa-users"></i> Cap: ${curso.capacidad}</div>
+                            <div><i class="fas fa-user-check"></i> Aprobados: ${estudiantesAprobados}</div>
+                        </div>
+                        <div style="margin-top: 10px; font-size: 0.9rem;">
+                            <div><i class="fas fa-tasks"></i> ${tareasDelCurso} tarea(s)</div>
+                            ${solicitudesPendientes > 0 ? `
+                                <div style="margin-top: 8px; padding: 8px; background: #fef3c7; border-radius: 6px; color: #92400e; font-weight: 600;">
+                                    <i class="fas fa-bell"></i> ${solicitudesPendientes} solicitud(es) pendiente(s)
+                                </div>
+                            ` : ''}
+                            <small style="display: block; margin-top: 5px; opacity: 0.8;">Creado: ${curso.fecha}</small>
+                        </div>
+                        <button class="btn btn-secondary btn-small" style="width: 100%; margin-top: 10px;" onclick="abrirSolicitudesInscripcion(${curso.id})">
+                            <i class="fas fa-clipboard-list"></i> Gestionar Inscripciones
+                        </button>
+                    `;
+                    container.appendChild(card);
+
+                    selectCursos.forEach(select => {
+                        const option = document.createElement('option');
+                        option.value = curso.id;
+                        option.text = curso.nombre;
+                        select.appendChild(option);
+                    });
+                });
+            }
+        }
+
+        function loadIndicesSolicitudes() {
+            const container = document.getElementById('indiceSolicituddesContainer');
+            container.innerHTML = '';
+
+            
+            const inscripciones = JSON.parse(localStorage.getItem('inscripciones') || '[]');
+            const misCursos = cursos.filter(c => c.profesor === userEmail);
+            
+            // Obtener todas las solicitudes pendientes de todos los cursos del profesor
+            let todasLasSolicitudes = [];
+            misCursos.forEach(curso => {
+                const solicitudesCurso = inscripciones.filter(i => i.cursoId == curso.id && i.estado === 'pendiente');
+                solicitudesCurso.forEach(solicitud => {
+                    todasLasSolicitudes.push({
+                        ...solicitud,
+                        cursoNombre: curso.nombre,
+                        cursoId: curso.id
+                    });
+                });
+            });
+            
+            // Mostrar resumen
+            if (todasLasSolicitudes.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 30px; background: #f0fdf4; border-radius: 8px; border-left: 4px solid #22c55e;">
+                        <i class="fas fa-check-circle" style="font-size: 2rem; color: #22c55e; margin-bottom: 10px; display: block;"></i>
+                        <p style="color: #22c55e; font-weight: 600;">✓ No hay solicitudes pendientes</p>
+                    </div>
+                `;
+            } else {
+                // Agrupar solicitudes por curso
+                const solicitudesPorCurso = {};
+                todasLasSolicitudes.forEach(solicitud => {
+                    if (!solicitudesPorCurso[solicitud.cursoId]) {
+                        solicitudesPorCurso[solicitud.cursoId] = [];
+                    }
+                    solicitudesPorCurso[solicitud.cursoId].push(solicitud);
+                });
+                
+                // Mostrar tarjetas por curso
+                Object.keys(solicitudesPorCurso).forEach(cursoId => {
+                    const solicitudesCurso = solicitudesPorCurso[cursoId];
+                    const curso = cursos.find(c => c.id == cursoId);
+                    
+                    const card = document.createElement('div');
+                    card.style.cssText = `
+                        padding: 20px;
+                        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+                        border-radius: 8px;
+                        border-left: 4px solid #f59e0b;
+                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                    `;
+                    
+                    let estudiantesHTML = '';
+                    solicitudesCurso.forEach((solicitud, idx) => {
+                        estudiantesHTML += `
+                            <div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; align-items: center; padding: 10px 0; ${idx > 0 ? 'border-top: 1px solid rgba(0,0,0,0.1);' : ''}">
+                                <div>
+                                    <div style="font-weight: 600; color: #333;">${solicitud.estudiante}</div>
+                                    <small style="color: #666; opacity: 0.8;">${solicitud.fecha} - ${solicitud.hora}</small>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                                    <button class="btn btn-success btn-small" onclick="aprobarInscripcion(${solicitud.id})">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button class="btn btn-danger btn-small" onclick="rechazarInscripcion(${solicitud.id})">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    card.innerHTML = `
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+                            <div>
+                                <h4 style="margin: 0; color: #92400e; display: flex; align-items: center; gap: 10px;">
+                                    <i class="fas fa-book"></i> ${curso.nombre}
+                                </h4>
+                            </div>
+                            <span style="background: #f59e0b; color: white; padding: 5px 12px; border-radius: 20px; font-weight: 600; font-size: 0.9rem;">
+                                ${solicitudesCurso.length} solicitud(es)
+                            </span>
+                        </div>
+                        <div>
+                            ${estudiantesHTML}
+                        </div>
+                    `;
+                    
+                    container.appendChild(card);
+                });
+            }
+        }
+
+
+        function abrirSolicitudesInscripcion(cursoId) {
+            const curso = cursos.find(c => c.id == cursoId);
+            const inscripciones = JSON.parse(localStorage.getItem('inscripciones') || '[]');
+            const solicitudes = inscripciones.filter(i => i.cursoId == cursoId && i.estado === 'pendiente');
+            const aprobados = inscripciones.filter(i => i.cursoId == cursoId && i.estado === 'aprobado');
+            
+            // SECCIÓN: SOLICITUDES PENDIENTES
+            let solicitudesHTML = '';
+            if (solicitudes.length === 0) {
+                solicitudesHTML = `
+                    <div style="text-align: center; padding: 20px; background: #f0fdf4; border-radius: 8px; border-left: 4px solid #22c55e;">
+                        <i class="fas fa-check-circle" style="font-size: 1.5rem; color: #22c55e; margin-bottom: 10px; display: block;"></i>
+                        <p style="color: #22c55e; font-weight: 600; margin: 0;">✓ No hay solicitudes pendientes</p>
+                    </div>
+                `;
+            } else {
+                solicitudesHTML = '<div style="display: grid; gap: 12px;">';
+                solicitudes.forEach(solicitud => {
+                    solicitudesHTML += `
+                        <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: #fef3c7; border-radius: 8px; border-left: 4px solid #f59e0b;">
+                            <div>
+                                <h4 style="margin: 0 0 3px 0; color: #92400e; font-size: 0.95rem;">${solicitud.estudiante}</h4>
+                                <p style="margin: 0; font-size: 0.8rem; opacity: 0.8; color: #92400e;">
+                                    Solicitado: ${solicitud.fecha} ${solicitud.hora}
+                                </p>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                                <button class="btn btn-success" style="padding: 6px 12px; font-size: 0.85rem;" onclick="aprobarInscripcionModal(${solicitud.id}, ${cursoId}, '${curso.nombre}')">
+                                    <i class="fas fa-check"></i> Aceptar
+                                </button>
+                                <button class="btn btn-danger" style="padding: 6px 12px; font-size: 0.85rem;" onclick="rechazarInscripcionModal(${solicitud.id}, ${cursoId})">
+                                    <i class="fas fa-times"></i> Rechazar
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                solicitudesHTML += '</div>';
+            }
+
+            // SECCIÓN: ESTUDIANTES APROBADOS
+            let aprobadosHTML = '';
+            if (aprobados.length === 0) {
+                aprobadosHTML = `
+                    <div style="text-align: center; padding: 20px; background: #f0f9ff; border-radius: 8px; border-left: 4px solid #0284c7;">
+                        <i class="fas fa-inbox" style="font-size: 1.5rem; color: #0284c7; margin-bottom: 10px; display: block;"></i>
+                        <p style="color: #0284c7; font-weight: 600; margin: 0;">No hay estudiantes aprobados aún</p>
+                    </div>
+                `;
+            } else {
+                aprobadosHTML = '<div style="display: grid; gap: 12px;">';
+                aprobados.forEach(est => {
+                    aprobadosHTML += `
+                        <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: #dcfce7; border-radius: 8px; border-left: 4px solid #22c55e;">
+                            <div>
+                                <h4 style="margin: 0 0 3px 0; color: #166534; font-size: 0.95rem;">${est.estudiante}</h4>
+                                <p style="margin: 0; font-size: 0.8rem; opacity: 0.8; color: #166534;">
+                                    Aprobado: ${est.fecha}
+                                </p>
+                            </div>
+                            <button class="btn btn-danger" style="padding: 6px 12px; font-size: 0.85rem;" onclick="removerEstudianteInscripcion(${est.id}, ${cursoId})">
+                                <i class="fas fa-ban"></i> Remover
+                            </button>
+                        </div>
+                    `;
+                });
+                aprobadosHTML += '</div>';
+            }
+            
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-content" style="width: 80%; max-width: 800px; max-height: 80vh; overflow-y: auto;">
+                    <div style="padding: 20px;">
+                        <h3 style="margin-bottom: 20px;"><i class="fas fa-clipboard-list"></i> Gestionar - ${curso.nombre} <small>(${curso.capacidad} lugares)</small></h3>
+                        <p style="margin-bottom: 20px; padding: 12px; background: #e0f2fe; border-radius: 6px; color: #0369a1; font-size: 0.95rem;">
+                            <strong>Aprobados:</strong> ${aprobados.length} | 
+                            <strong>Pendientes:</strong> ${solicitudes.length}
+                        </p>
+
+                        <h4 style="color: #f59e0b; margin-top: 20px; margin-bottom: 12px; font-size: 1rem;">
+                            <i class="fas fa-hourglass-half"></i> Pendientes por Aprobar
+                        </h4>
+                        ${solicitudesHTML}
+
+                        <h4 style="color: #22c55e; margin-top: 25px; margin-bottom: 12px; font-size: 1rem;">
+                            <i class="fas fa-user-check"></i> Estudiantes Aprobados
+                        </h4>
+                        ${aprobadosHTML}
+                    </div>
+                    <button class="btn btn-secondary" onclick="this.closest('.modal-overlay').remove()" style="width: 100%; margin-top: 20px;">
+                        Cerrar
+                    </button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+        }
+
+        function removerEstudianteInscripcion(inscripcionId, cursoId) {
+            if (confirm('¿Estás seguro de que deseas remover este estudiante del curso?')) {
+                const inscripciones = JSON.parse(localStorage.getItem('inscripciones') || '[]');
+                const inscripcion = inscripciones.find(i => i.id == inscripcionId);
+                
+                if (inscripcion) {
+                    inscripciones.splice(inscripciones.indexOf(inscripcion), 1);
+                    localStorage.setItem('inscripciones', JSON.stringify(inscripciones));
+                    
+                    alert(`✓ ${inscripcion.estudiante} ha sido removido del curso`);
+                    
+                    // Actualizar modal
+                    const modal = document.querySelector('.modal-overlay');
+                    if (modal) modal.remove();
+                    
+                    abrirSolicitudesInscripcion(cursoId);
+                    loadEstudiantesAprobados();
+                    loadIndicesSolicitudes();
+                }
+            }
+        }
+
+        function aprobarInscripcionModal(inscripcionId, cursoId, nombreCurso) {
+            // VALIDAR: Solo el profesor que creó el curso puede aprobar
+            const curso = cursos.find(c => c.id == cursoId);
+            
+            if (!curso) {
+                alert('❌ Error: El curso no existe.');
+                return;
+            }
+
+            // VALIDAR: El profesor actual DEBE ser el dueño del curso
+            if (curso.profesor !== userEmail) {
+                alert('❌ Error: Solo el profesor que creó el curso puede aprobar inscripciones.\n\nProfesor del curso: ' + curso.profesor);
+                return;
+            }
+
+            const inscripciones = JSON.parse(localStorage.getItem('inscripciones') || '[]');
+            const inscripcion = inscripciones.find(i => i.id == inscripcionId);
+            
+            if (!inscripcion) {
+                alert('❌ Error: La solicitud no existe.');
+                return;
+            }
+
+            // VALIDAR: La inscripción debe ser para el curso correcto
+            if (inscripcion.cursoId != cursoId) {
+                alert('❌ Error: Inconsistencia en los datos.');
+                return;
+            }
+
+            inscripcion.estado = 'aprobado';
+            localStorage.setItem('inscripciones', JSON.stringify(inscripciones));
+            
+            alert(`✓ ${inscripcion.estudiante} ha sido ACEPTADO en "${nombreCurso}"`);
+            
+            // Cerrar el modal actual
+            const modal = document.querySelector('.modal-overlay');
+            if (modal) modal.remove();
+            
+            // Reabrir el modal de gestionar inscripciones para actualizar la lista
+            abrirSolicitudesInscripcion(cursoId);
+            
+            // Actualizar los tabs
+            loadIndicesSolicitudes();
+            loadEstudiantesAprobados();
+        }
+
+        function rechazarInscripcionModal(inscripcionId, cursoId) {
+            if (confirm('¿Confirmas rechazar esta solicitud?')) {
+                const inscripciones = JSON.parse(localStorage.getItem('inscripciones') || '[]');
+                const inscripcion = inscripciones.find(i => i.id == inscripcionId);
+                
+                if (inscripcion) {
+                    inscripcion.estado = 'rechazado';
+                    localStorage.setItem('inscripciones', JSON.stringify(inscripciones));
+                    
+                    alert(`✗ Solicitud de ${inscripcion.estudiante} rechazada`);
+                    
+                    // Actualizar el modal
+                    const modal = document.querySelector('.modal-overlay');
+                    if (modal) modal.remove();
+                    
+                    // Recargar
+                    abrirSolicitudesInscripcion(cursoId);
+                    loadIndicesSolicitudes();
+                }
+            }
+        }
+
+        function aprobarInscripcion(inscripcionId) {
+            const inscripciones = JSON.parse(localStorage.getItem('inscripciones') || '[]');
+            const inscripcion = inscripciones.find(i => i.id == inscripcionId);
+            
+            if (inscripcion) {
+                inscripcion.estado = 'aprobado';
+                localStorage.setItem('inscripciones', JSON.stringify(inscripciones));
+                alert(`✓ Inscripción de ${inscripcion.estudiante} aprobada`);
+                
+                // Cerrar modal si existe
+                const modal = document.querySelector('.modal-overlay');
+                if (modal) modal.remove();
+                
+                // Recargar tabs
+                loadIndicesSolicitudes();
+                loadEstudiantesAprobados();
+            }
+        }
+
+        function rechazarInscripcion(inscripcionId) {
+            const inscripciones = JSON.parse(localStorage.getItem('inscripciones') || '[]');
+            const inscripcion = inscripciones.find(i => i.id == inscripcionId);
+            
+            if (inscripcion) {
+                inscripcion.estado = 'rechazado';
+                localStorage.setItem('inscripciones', JSON.stringify(inscripciones));
+                alert(`✗ Inscripción de ${inscripcion.estudiante} rechazada`);
+                
+                // Cerrar modal si existe
+                const modal = document.querySelector('.modal-overlay');
+                if (modal) modal.remove();
+                
+                // Recargar índice de solicitudes
+                loadIndicesSolicitudes();
+            }
+        }
+
+        function loadCursosEstudiante() {
+            const container = document.getElementById('cursosDisponiblesContainer');
+            container.innerHTML = '';
+
+            // Obtener inscripciones del estudiante actual
+            const inscripciones = JSON.parse(localStorage.getItem('inscripciones') || '[]');
+            const misInscripciones = inscripciones.filter(i => i.estudiante === userEmail);
+
+            // VALIDAR: Solo mostrar cursos que tengan un profesor válido asignado
+            const cursosValidos = cursos.filter(c => c.profesor && c.profesor.trim() !== '');
+
+            if (cursosValidos.length === 0) {
+                container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #999; padding: 40px;"><i class="fas fa-inbox"></i> No hay cursos disponibles. El profesor aún no ha creado ninguno.</p>';
+            } else {
+                cursosValidos.forEach(curso => {
+                    const miInscripcion = misInscripciones.find(i => i.cursoId === curso.id);
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    
+                    const estudiantesInscritos = inscripciones.filter(i => i.cursoId == curso.id && i.estado === 'aprobado').length;
+                    
+                    card.innerHTML = `
+                        <h3><i class="fas fa-book"></i> ${curso.nombre}</h3>
+                        <p>${curso.descripcion}</p>
+                        <small style="display: block; margin: 10px 0; color: #999;">
+                            <i class="fas fa-user"></i> Prof: ${curso.profesor}
+                        </small>
+                        <div style="display: flex; gap: 10px; margin-top: 15px; font-size: 0.9rem;">
+                            <div><i class="fas fa-users"></i> Cap: ${curso.capacidad}</div>
+                            <div><i class="fas fa-user-check"></i> Inscritos: ${estudiantesInscritos}/${curso.capacidad}</div>
+                        </div>
+                        <div style="margin-top: 15px;">
+                            ${miInscripcion ? renderButtonEstadoInscripcion(miInscripcion, curso.id) : `
+                                <button class="btn btn-primary" style="width: 100%;" onclick="inscribirse(${curso.id}, '${curso.nombre}')">
+                                    <i class="fas fa-plus-circle"></i> Solicitar Inscripción
+                                </button>
+                            `}
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            }
+        }
+
+        function renderButtonEstadoInscripcion(inscripcion, cursoId) {
+            if (inscripcion.estado === 'pendiente') {
+                return `
+                    <button class="btn btn-secondary" style="width: 100%; background: #f59e0b;">
+                        <i class="fas fa-hourglass-half"></i> Pendiente de Aprobación
+                    </button>
+                    <button class="btn btn-secondary btn-small" style="width: 100%; background: #ef4444; margin-top: 8px;" onclick="desinscrirse(${cursoId})">
+                        <i class="fas fa-times"></i> Cancelar Solicitud
+                    </button>
+                `;
+            } else if (inscripcion.estado === 'aprobado') {
+                return `
+                    <button class="btn btn-secondary" style="width: 100%; background: #10b981;">
+                        <i class="fas fa-check-circle"></i> Inscrito - Aprobado
+                    </button>
+                    <button class="btn btn-secondary btn-small" style="width: 100%; background: #ef4444; margin-top: 8px;" onclick="desinscrirse(${cursoId})">
+                        <i class="fas fa-trash"></i> Desinscribirse
+                    </button>
+                `;
+            } else if (inscripcion.estado === 'rechazado') {
+                return `
+                    <button class="btn btn-secondary" style="width: 100%; background: #ef4444;">
+                        <i class="fas fa-times-circle"></i> Inscripción Rechazada
+                    </button>
+                    <button class="btn btn-primary btn-small" style="width: 100%; margin-top: 8px;" onclick="inscribirse(${cursoId}, event.target.closest('.card').querySelector('h3').textContent)">
+                        <i class="fas fa-redo"></i> Intentar de Nuevo
+                    </button>
+                `;
+            }
+        }
+
+        function inscribirse(cursoId, nombreCurso) {
+            // VALIDAR: Verificar que el curso exista y sea válido
+            const curso = cursos.find(c => c.id == cursoId);
+            if (!curso) {
+                alert('❌ Error: Este curso no existe. Por favor, recarga la página.');
+                return;
+            }
+
+            // VALIDAR: Verificar que el curso tenga un profesor asignado
+            if (!curso.profesor || curso.profesor.trim() === '') {
+                alert('❌ Error: Este curso no tiene profesor asignado. Contacta al administrador.');
+                return;
+            }
+
+            const inscripciones = JSON.parse(localStorage.getItem('inscripciones') || '[]');
+            
+            // Verificar si ya existe una solicitud (pendiente o aprobada)
+            if (inscripciones.some(i => i.estudiante === userEmail && i.cursoId === cursoId)) {
+                alert('⚠️ Ya has solicitado inscripción a este curso. Espera la aprobación del profesor.');
+                return;
+            }
+
+            // Crear nueva inscripción en estado PENDIENTE
+            const nuevaInscripcion = {
+                id: Date.now(),
+                cursoId: cursoId,
+                profesor: curso.profesor,
+                estudiante: userEmail,
+                estado: 'pendiente',
+                fecha: new Date().toLocaleDateString('es-ES'),
+                hora: new Date().toLocaleTimeString('es-ES')
+            };
+
+            inscripciones.push(nuevaInscripcion);
+            localStorage.setItem('inscripciones', JSON.stringify(inscripciones));
+
+            alert(`✅ Solicitud enviada\n\n"${nombreCurso}"\nProfesor: ${curso.profesor}\nEsperando aprobación...`);
+            loadCursosEstudiante();
+        }
+
+        function desinscrirse(cursoId) {
+            const confirm_desinscrirse = confirm('¿Estás seguro que deseas cancelar tu solicitud/inscripción?');
+            
+            if (!confirm_desinscrirse) return;
+
+            const inscripciones = JSON.parse(localStorage.getItem('inscripciones') || '[]');
+            const nuevasInscripciones = inscripciones.filter(i => !(i.estudiante === userEmail && i.cursoId === cursoId));
+            
+            localStorage.setItem('inscripciones', JSON.stringify(nuevasInscripciones));
+            alert('✅ Solicitud cancelada');
+            loadCursosEstudiante();
+        }
+
+        function loadTareas() {
+            const tbody = document.getElementById('tareasList');
+            tbody.innerHTML = '';
+
+            let tareasAMostrar = tareas;
+
+            // Si es estudiante, mostrar solo tareas de cursos APROBADOS y del profesor correcto
+            if (userRole === 'estudiante') {
+                const inscripciones = JSON.parse(localStorage.getItem('inscripciones') || '[]');
+                // Solo mostrar tareas de cursos APROBADOS
+                const cursosAprobados = inscripciones.filter(i => i.estudiante === userEmail && i.estado === 'aprobado').map(i => i.cursoId);
+                
+                // Filtrar tareas que sean del curso aprobado Y del profesor correcto del curso
+                tareasAMostrar = tareas.filter(t => {
+                    if (!cursosAprobados.includes(t.curso)) return false;
+                    
+                    // VALIDAR: La tarea solo es válida si es del profesor que creó el curso
+                    const curso = cursos.find(c => c.id == t.curso);
+                    return curso && t.profesor === curso.profesor;
+                });
+            } else {
+                // Si es profesor, mostrar solo sus tareas
+                tareasAMostrar = tareas.filter(t => t.profesor === userEmail);
+            }
+
+            if (tareasAMostrar.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #999; padding: 40px;"><i class="fas fa-inbox"></i> No hay tareas disponibles</td></tr>';
+            } else {
+                tareasAMostrar.forEach(tarea => {
+                    const cursoNombre = cursos.find(c => c.id == tarea.curso)?.nombre || 'N/A';
+                    const row = document.createElement('tr');
+                    const isProfesor = userRole === 'profesor';
+                    
+                    row.innerHTML = `
+                        <td>${cursoNombre}</td>
+                        <td>${tarea.nombre}</td>
+                        <td>${tarea.fechaLimite}</td>
+                        <td><span class="status-badge status-pendiente">Pendiente</span></td>
+                        <td>-</td>
+                        <td>
+                            ${isProfesor ? `
+                                <button class="btn btn-secondary btn-small" onclick="verEntregas(${tarea.id})">
+                                    <i class="fas fa-file-pdf"></i> Ver Entregas
+                                </button>
+                            ` : `
+                                <button class="btn btn-secondary btn-small" onclick="abrirEntrega(${tarea.id})">
+                                    <i class="fas fa-upload"></i> Entregar
+                                </button>
+                            `}
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+
+            document.getElementById('tareasPendientes').textContent = tareasAMostrar.length + ' tarea(s)';
+        }
+
+        function loadCuestionarios() {
+            const tbody = document.getElementById('cuestionariosList');
+            tbody.innerHTML = '';
+
+            if (cuestionarios.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #999; padding: 40px;">No hay cuestionarios disponibles</td></tr>';
+            } else {
+                cuestionarios.forEach(cuestionario => {
+                    const cursoNombre = cursos.find(c => c.id == cuestionario.curso)?.nombre || 'N/A';
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${cursoNombre}</td>
+                        <td>${cuestionario.nombre}</td>
+                        <td>-</td>
+                        <td>${cuestionario.tiempoLimite} min</td>
+                        <td><span class="status-badge status-pendiente">No Realizado</span></td>
+                        <td>-</td>
+                        <td>
+                            <button class="btn btn-secondary btn-small" onclick="realizarCuestionario(${cuestionario.id})">
+                                <i class="fas fa-play"></i> Realizar
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+        }
+
+        function loadForo() {
+            const container = document.getElementById('foroContainer');
+            container.innerHTML = '';
+
+            if (foroTemas.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #999; padding: 40px; grid-column: 1/-1;">No hay temas de discusión. ¡Sé el primero en crear uno!</p>';
+            } else {
+                foroTemas.forEach(tema => {
+                    const div = document.createElement('div');
+                    div.style.cssText = 'background: white; padding: 20px; border-radius: 12px; border-left: 4px solid #667eea;';
+                    const cursoNombre = cursos.find(c => c.id == tema.curso)?.nombre || 'Curso';
+                    div.innerHTML = `
+                        <h4 style="color: #667eea; margin-bottom: 10px;">${tema.titulo}</h4>
+                        <small style="color: #999;"><strong>Curso:</strong> ${cursoNombre}</small><br>
+                        <small style="color: #999;"><strong>Autor:</strong> ${tema.autor} - ${tema.fecha}</small>
+                        <p style="margin-top: 10px; color: #333;">${tema.mensaje}</p>
+                        <button class="btn btn-secondary btn-small" style="margin-top: 10px;" onclick="responderForo(${tema.id})">
+                            <i class="fas fa-reply"></i> Responder
+                        </button>
+                    `;
+                    container.appendChild(div);
+                });
+            }
+        }
+
+        function updateSelectCursos(selectId) {
+            const select = document.getElementById(selectId);
+            select.innerHTML = '<option value="">-- Seleccionar --</option>';
+            
+            // Si es profesor, mostrar solo sus cursos
+            let cursosDisponibles = cursos;
+            if (userRole === 'profesor') {
+                cursosDisponibles = cursos.filter(c => c.profesor === userEmail);
+            }
+
+            cursosDisponibles.forEach(curso => {
+                const option = document.createElement('option');
+                option.value = curso.id;
+                option.text = curso.nombre;
+                select.appendChild(option);
+            });
+        }
+
+        function editarTarea(tareaId) {
+            alert('📝 Función de editar tarea en desarrollo');
+        }
+
+        function abrirEntrega(tareaId) {
+            const tarea = tareas.find(t => t.id === tareaId);
+            document.getElementById('modalEntregarArchivo').dataset.tareaId = tareaId;
+            document.getElementById('archivoTarea').value = '';
+            document.getElementById('comentarioEntrega').value = '';
+            document.getElementById('modalEntregarArchivo').classList.add('active');
+        }
+
+        function entregarTarea(event) {
+            event.preventDefault();
+            const tareaId = parseInt(document.getElementById('modalEntregarArchivo').dataset.tareaId);
+            const archivo = document.getElementById('archivoTarea').files[0];
+            const comentario = document.getElementById('comentarioEntrega').value;
+            
+            if (!archivo) {
+                alert('Por favor selecciona un archivo');
+                return;
+            }
+
+            let entregas = JSON.parse(localStorage.getItem('entregas')) || [];
+            const entrega = {
+                id: Date.now(),
+                tareaId: tareaId,
+                estudiante: userEmail,
+                nombreArchivo: archivo.name,
+                tamano: archivo.size,
+                comentario: comentario,
+                fecha: new Date().toLocaleDateString('es-ES'),
+                hora: new Date().toLocaleTimeString('es-ES'),
+                calificacion: null,
+                retroalimentacion: null
+            };
+            
+            entregas.push(entrega);
+            localStorage.setItem('entregas', JSON.stringify(entregas));
+            closeModal('modalEntregarArchivo');
+            alert('✅ Archivo entregado exitosamente');
+            loadTareas();
+        }
+
+        function verEntregas(tareaId) {
+            const tarea = tareas.find(t => t.id === tareaId);
+            let entregas = JSON.parse(localStorage.getItem('entregas')) || [];
+            const entregasDeTarea = entregas.filter(e => e.tareaId === tareaId);
+            
+            const contenido = document.getElementById('entregasContent');
+            contenido.innerHTML = `
+                <div style="margin-bottom: 15px;">
+                    <strong>Tarea:</strong> ${tarea.nombre}<br>
+                    <strong>Curso:</strong> ${cursos.find(c => c.id == tarea.curso)?.nombre || 'N/A'}
+                </div>
+                ${entregasDeTarea.length === 0 ? 
+                    '<p style="text-align: center; color: #999;">No hay entregas aún</p>' : 
+                    entregasDeTarea.map(e => `
+                        <div style="background: #f9f9f9; padding: 15px; margin: 10px 0; border-radius: 8px; border-left: 3px solid #667eea;">
+                            <strong>${e.estudiante}</strong><br>
+                            <small>📄 ${e.nombreArchivo} (${(e.tamano/1024).toFixed(2)} KB)</small><br>
+                            <small>📅 ${e.fecha} ${e.hora}</small><br>
+                            ${e.comentario ? `<small>💬 ${e.comentario}</small><br>` : ''}
+                            <div style="margin-top: 10px; padding-bottom: 10px; border-bottom: 1px solid #ddd;">
+                                ${e.calificacion ? `
+                                    <span style="color: green;"><i class="fas fa-check-circle"></i> Calificado: ${e.calificacion}/100</span><br>
+                                    <p style="margin: 5px 0; font-size: 0.9rem; color: #555;">${e.retroalimentacion}</p>
+                                ` : `
+                                    <button class="btn btn-primary btn-small" onclick="abrirCalificacion(${tareaId}, ${e.id})">
+                                        <i class="fas fa-grade"></i> Calificar
+                                    </button>
+                                `}
+                            </div>
+                        </div>
+                    `).join('')
+                }
+            `;
+            
+            document.getElementById('modalVerEntregas').classList.add('active');
+        }
+
+        function abrirCalificacion(tareaId, entregaId) {
+            const puntos = prompt('Ingresa la calificación (0-100):');
+            if (puntos !== null) {
+                const retroalimentacion = prompt('Retroalimentación para el estudiante:');
+                if (retroalimentacion !== null) {
+                    let entregas = JSON.parse(localStorage.getItem('entregas')) || [];
+                    const entrega = entregas.find(e => e.id === entregaId);
+                    if (entrega) {
+                        entrega.calificacion = parseInt(puntos);
+                        entrega.retroalimentacion = retroalimentacion;
+                        localStorage.setItem('entregas', JSON.stringify(entregas));
+                        alert('✅ Calificación guardada');
+                        verEntregas(tareaId);
+                    }
+                }
+            }
+        }
+
+        function realizarCuestionario(cuestionarioId) {
+            const cuestionario = cuestionarios.find(c => c.id === cuestionarioId);
+            if (!cuestionario) return;
+            
+            const contenido = document.getElementById('cuestionarioContent');
+            contenido.innerHTML = `
+                <div style="margin-bottom: 20px; padding: 15px; background: #f0f4ff; border-radius: 8px;">
+                    <h4>${cuestionario.nombre}</h4>
+                    <p>⏱️ Tiempo límite: ${cuestionario.tiempoLimite} minutos</p>
+                    <p>⭐ Puntaje máximo: ${cuestionario.puntaje}</p>
+                </div>
+                <div id="preguntasContent">
+                    <p style="text-align: center; color: #999;">Las preguntas se cargarán aquí una vez guardadas.</p>
+                    <p style="text-align: center; font-size: 0.9rem; color: #999;">Nota: Para agregar preguntas, el profesor debe editar el cuestionario.</p>
+                </div>
+            `;
+            
+            document.getElementById('modalRealizarCuestionario').dataset.cuestionarioId = cuestionarioId;
+            document.getElementById('modalRealizarCuestionario').classList.add('active');
+        }
+
+        function enviarCuestionario(event) {
+            event.preventDefault();
+            const cuestionarioId = parseInt(document.getElementById('modalRealizarCuestionario').dataset.cuestionarioId);
+            const cuestionario = cuestionarios.find(c => c.id === cuestionarioId);
+            
+            let respuestas = JSON.parse(localStorage.getItem('respuestasQuiz')) || [];
+            const respuesta = {
+                id: Date.now(),
+                cuestionarioId: cuestionarioId,
+                estudiante: userEmail,
+                fecha: new Date().toLocaleDateString('es-ES'),
+                hora: new Date().toLocaleTimeString('es-ES'),
+                respuestas: {},
+                calificacion: null
+            };
+            
+            respuestas.push(respuesta);
+            localStorage.setItem('respuestasQuiz', JSON.stringify(respuestas));
+            closeModal('modalRealizarCuestionario');
+            alert('✅ Cuestionario enviado exitosamente');
+            loadCuestionarios();
+        }
+
+        function responderForo(temaId) {
+            const tema = foroTemas.find(t => t.id === temaId);
+            if (!tema) return;
+            
+            const temaCont = document.getElementById('temaForoContent');
+            temaCont.innerHTML = `
+                <h4 style="color: #667eea; margin-bottom: 10px;">${tema.titulo}</h4>
+                <small style="color: #999;"><strong>Autor:</strong> ${tema.autor} - ${tema.fecha}</small>
+                <p style="margin-top: 10px; color: #333;">${tema.mensaje}</p>
+            `;
+            
+            document.getElementById('modalResponderForo').dataset.temaId = temaId;
+            document.getElementById('respuestaForo').value = '';
+            document.getElementById('modalResponderForo').classList.add('active');
+        }
+
+        function guardarRespuestaForo(event) {
+            event.preventDefault();
+            const temaId = parseInt(document.getElementById('modalResponderForo').dataset.temaId);
+            const textoRespuesta = document.getElementById('respuestaForo').value;
+            
+            const tema = foroTemas.find(t => t.id === temaId);
+            if (!tema) return;
+            
+            const respuesta = {
+                id: Date.now(),
+                autor: userEmail,
+                texto: textoRespuesta,
+                fecha: new Date().toLocaleDateString('es-ES'),
+                hora: new Date().toLocaleTimeString('es-ES')
+            };
+            
+            if (!tema.respuestas) tema.respuestas = [];
+            tema.respuestas.push(respuesta);
+            localStorage.setItem('foroTemas', JSON.stringify(foroTemas));
+            
+            closeModal('modalResponderForo');
+            alert('✅ Respuesta publicada exitosamente');
+            loadForo();
+        }
+
+        function logout() {
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('userRole');
+            window.location.href = 'login.html';
+        }
+
+        function loadProfesorCursos() {
+            const container = document.getElementById('profesorCursos');
+            container.innerHTML = '';
+            
+            // Filtrar solo los cursos creados por el profesor actual
+            const misCursos = cursos.filter(c => c.profesor === userEmail);
+            
+            if (misCursos.length === 0) {
+                container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #999; padding: 40px;">No has creado ningún curso aún. <a href="#" onclick="openModalCurso(); return false;" style="color: #667eea; text-decoration: underline;">Crear uno ahora</a></p>';
+            } else {
+                misCursos.forEach(curso => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    const tareasDelCurso = tareas.filter(t => t.curso == curso.id && t.profesor === userEmail).length;
+                    card.innerHTML = `
+                        <h3><i class="fas fa-book"></i> ${curso.nombre}</h3>
+                        <p>${curso.descripcion}</p>
+                        <div style="display: flex; gap: 15px; margin-top: 15px; font-size: 0.9rem;">
+                            <div><i class="fas fa-users"></i> Cap: ${curso.capacidad}</div>
+                            <div><i class="fas fa-tasks"></i> ${tareasDelCurso} tareas</div>
+                        </div>
+                        <small style="display: block; margin-top: 10px; opacity: 0.8;">Creado: ${curso.fecha}</small>
+                    `;
+                    container.appendChild(card);
+                });
+            }
+        }
+
+        function loadProfesorEntregas() {
+            const tbody = document.getElementById('entregasTable');
+            tbody.innerHTML = '';
+            
+            // Obtener las entregas de las tareas creadas por el profesor
+            let entregas = JSON.parse(localStorage.getItem('entregas')) || [];
+            const misEntregas = entregas.filter(e => {
+                const tarea = tareas.find(t => t.id === e.tareaId);
+                return tarea && tarea.profesor === userEmail;
+            });
+            
+            if (misEntregas.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #999; padding: 40px;"><i class="fas fa-inbox"></i> No hay entregas aún</td></tr>';
+            } else {
+                misEntregas.forEach(entrega => {
+                    const tarea = tareas.find(t => t.id === entrega.tareaId);
+                    const curso = cursos.find(c => c.id == tarea.curso);
+                    const row = document.createElement('tr');
+                    
+                    const statusBadge = entrega.calificacion 
+                        ? `<span class="status-info status-calificado"><i class="fas fa-check-circle"></i> ${entrega.calificacion}/100</span>`
+                        : `<span class="status-info status-pendiente-calif"><i class="fas fa-hourglass-half"></i> Pendiente</span>`;
+                    
+                    row.innerHTML = `
+                        <td><strong>${entrega.estudiante}</strong></td>
+                        <td>${curso?.nombre || 'N/A'}</td>
+                        <td>${tarea?.nombre || 'N/A'}</td>
+                        <td>${entrega.fecha} ${entrega.hora}</td>
+                        <td>${statusBadge}</td>
+                        <td>
+                            <button class="btn btn-primary btn-small" onclick="abrirEntregaProfesor(${entrega.id}, ${tarea.id})">
+                                <i class="fas fa-eye"></i> Ver
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+        }
+
+        function abrirEntregaProfesor(entregaId, tareaId) {
+            let entregas = JSON.parse(localStorage.getItem('entregas')) || [];
+            const entrega = entregas.find(e => e.id === entregaId);
+            const tarea = tareas.find(t => t.id === tareaId);
+            const curso = cursos.find(c => c.id == tarea.curso);
+            
+            if (!entrega || !tarea) return;
+            
+            const detalles = `
+📋 DETALLES DE LA ENTREGA
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+👤 Estudiante: ${entrega.estudiante}
+📚 Curso: ${curso?.nombre || 'N/A'}
+✏️ Tarea: ${tarea?.nombre || 'N/A'}
+📅 Entregado: ${entrega.fecha} ${entrega.hora}
+📄 Archivo: ${entrega.nombreArchivo}
+💬 Comentario: ${entrega.comentario || 'Sin comentarios'}
+
+${entrega.calificacion ? `
+✅ ESTADO: CALIFICADO
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+📊 Calificación: ${entrega.calificacion}/100
+📝 Retroalimentación: ${entrega.retroalimentacion}
+` : `
+⏳ ESTADO: PENDIENTE DE CALIFICAR
+━━━━━━━━━━━━━━━━━━━━━━━━━━`}
+            `;
+            
+            alert(detalles);
+            
+            if (!entrega.calificacion) {
+                const nuevaPuntuacion = prompt('Ingresa la calificación (0-100):');
+                if (nuevaPuntuacion !== null && nuevaPuntuacion !== '') {
+                    const numPuntuacion = parseInt(nuevaPuntuacion);
+                    if (isNaN(numPuntuacion) || numPuntuacion < 0 || numPuntuacion > 100) {
+                        alert('❌ Por favor ingresa un número válido entre 0 y 100');
+                        return;
+                    }
+                    const retroalimentacion = prompt('Retroalimentación para el estudiante:');
+                    if (retroalimentacion !== null) {
+                        entrega.calificacion = numPuntuacion;
+                        entrega.retroalimentacion = retroalimentacion || 'Sin comentarios';
+                        localStorage.setItem('entregas', JSON.stringify(entregas));
+                        alert('✅ Calificación guardada correctamente\n\n📧 Notificación enviada a: ' + entrega.estudiante);
+                        loadProfesorEntregas();
+                    }
+                }
+            } else {
+                const editarCalificacion = confirm('¿Deseas editar la calificación?');
+                if (editarCalificacion) {
+                    const nuevaPuntuacion = prompt('Ingresa la nueva calificación (0-100):', entrega.calificacion);
+                    if (nuevaPuntuacion !== null && nuevaPuntuacion !== '') {
+                        const numPuntuacion = parseInt(nuevaPuntuacion);
+                        if (isNaN(numPuntuacion) || numPuntuacion < 0 || numPuntuacion > 100) {
+                            alert('❌ Por favor ingresa un número válido entre 0 y 100');
+                            return;
+                        }
+                        const retroalimentacion = prompt('Retroalimentación actualizada:', entrega.retroalimentacion);
+                        if (retroalimentacion !== null) {
+                            entrega.calificacion = numPuntuacion;
+                            entrega.retroalimentacion = retroalimentacion || 'Sin comentarios';
+                            localStorage.setItem('entregas', JSON.stringify(entregas));
+                            alert('✅ Calificación actualizada correctamente');
+                            loadProfesorEntregas();
+                        }
+                    }
+                }
+            }
+        }
+
+        // FUNCIONES PARA HERRAMIENTAS DEL PROFESOR
+        
+        function mostrarSeccionHerramienta(seccion) {
+            // VALIDACIÓN: Solo profesores pueden acceder
+            if (userRole !== 'profesor') {
+                alert('❌ Acceso denegado. Solo los profesores pueden acceder a las herramientas.');
+                return;
+            }
+            
+            // Ocultar todas las secciones
+            document.getElementById('seccionHerramientaAnuncios').style.display = 'none';
+            document.getElementById('seccionHerramientaMateriales').style.display = 'none';
+            document.getElementById('seccionHerramientaReportes').style.display = 'none';
+            document.getElementById('seccionHerramientaMensajes').style.display = 'none';
+            document.getElementById('seccionHerramientaAsistencia').style.display = 'none';
+            document.getElementById('seccionHerramientaConfiguracion').style.display = 'none';
+            
+            // Mostrar la sección seleccionada
+            const elementId = `seccionHerramienta${seccion.charAt(0).toUpperCase() + seccion.slice(1)}`;
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.style.display = 'block';
+                
+                // Cargar datos según la sección
+                if (seccion === 'anuncios') {
+                    loadAnuncios();
+                } else if (seccion === 'materiales') {
+                    loadMateriales();
+                } else if (seccion === 'reportes') {
+                    loadReportes();
+                } else if (seccion === 'mensajes') {
+                    loadMensajes();
+                } else if (seccion === 'asistencia') {
+                    loadAsistencia();
+                }
+            }
+        }
+
+        function openModalAnuncio() {
+            // VALIDACIÓN: Solo profesores pueden crear anuncios
+            if (userRole !== 'profesor') {
+                alert('❌ Acceso denegado. Solo los profesores pueden crear anuncios.');
+                return;
+            }
+            
+            // Obtener el curso seleccionado
+            const cursoSelect = document.getElementById('crearcursoSelect');
+            if (!cursoSelect) {
+                alert('Por favor, crea un curso primero');
+                return;
+            }
+
+            const HTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2><i class="fas fa-bullhorn"></i> Nuevo Anuncio</h2>
+                        <button type="button" class="close-btn" onclick="closeModal('modalAnuncio')">&times;</button>
+                    </div>
+                    <form onsubmit="crearAnuncio(event)">
+                        <div class="form-group">
+                            <label>Seleccionar Curso:</label>
+                            <select id="anuncioCursoSelect" required>
+                                <option value="">-- Seleccionar --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Título del Anuncio:</label>
+                            <input type="text" id="anuncioTitulo" placeholder="Ej: Cambio de fecha de examen" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Contenido:</label>
+                            <textarea id="anuncioContenido" placeholder="Escribe el anuncio aquí..." rows="6" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Publicar Anuncio
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            `;
+
+            const modal = document.getElementById('modalAnuncio');
+            if (!modal) {
+                const newModal = document.createElement('div');
+                newModal.id = 'modalAnuncio';
+                newModal.className = 'modal';
+                newModal.innerHTML = HTML;
+                document.body.appendChild(newModal);
+            } else {
+                modal.innerHTML = HTML;
+            }
+
+            document.getElementById('modalAnuncio').classList.add('active');
+            updateSelectCursos('anuncioCursoSelect');
+        }
+
+        function crearAnuncio(event) {
+            event.preventDefault();
+            
+            // VALIDACIÓN: Solo profesores
+            if (userRole !== 'profesor') {
+                alert('❌ Acceso denegado. Solo profesores pueden crear anuncios.');
+                return;
+            }
+            
+            const cursoId = parseInt(document.getElementById('anuncioCursoSelect').value);
+            const titulo = document.getElementById('anuncioTitulo').value;
+            const contenido = document.getElementById('anuncioContenido').value;
+
+            if (!cursoId) {
+                alert('Por favor selecciona un curso');
+                return;
+            }
+
+            if (!anuncios) anuncios = [];
+
+            const anuncio = {
+                id: Date.now(),
+                cursoId: cursoId,
+                titulo: titulo,
+                contenido: contenido,
+                profesor: userEmail,
+                fecha: new Date().toLocaleDateString(),
+                hora: new Date().toLocaleTimeString(),
+                leido: false
+            };
+
+            anuncios.push(anuncio);
+            localStorage.setItem('anuncios', JSON.stringify(anuncios));
+            alert('✅ Anuncio publicado correctamente');
+            closeModal('modalAnuncio');
+            loadAnuncios();
+        }
+
+        function loadAnuncios() {
+            if (!anuncios) anuncios = [];
+
+            const mesCursos = cursos.filter(c => c.profesor === userEmail);
+            const misAnuncios = anuncios.filter(a => mesCursos.some(c => c.id === a.cursoId));
+
+            const container = document.getElementById('anunciosContainer');
+            if (misAnuncios.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #999;">No hay anuncios publicados. <button class="btn btn-primary btn-small" onclick="openModalAnuncio()">Crear uno</button></p>';
+                return;
+            }
+
+            container.innerHTML = misAnuncios.map(a => {
+                const curso = cursos.find(c => c.id === a.cursoId);
+                return `
+                    <div class="card" style="border-left: 4px solid #ff9800;">
+                        <h5 style="margin: 0 0 5px 0; color: #333;">${a.titulo}</h5>
+                        <small style="color: #666;"><i class="fas fa-book"></i> ${curso?.nombre || 'Curso desconocido'}</small><br>
+                        <small style="color: #999;"><i class="fas fa-calendar"></i> ${a.fecha} ${a.hora}</small>
+                        <p style="margin: 10px 0; color: #555;">${a.contenido}</p>
+                        <button class="btn btn-danger btn-small" onclick="eliminarAnuncio(${a.id})">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function eliminarAnuncio(id) {
+            // VALIDACIÓN: Solo profesores
+            if (userRole !== 'profesor') {
+                alert('❌ Acceso denegado. Solo profesores pueden eliminar anuncios.');
+                return;
+            }
+            
+            if (confirm('¿Estás seguro de eliminar este anuncio?')) {
+                anuncios = anuncios.filter(a => a.id !== id);
+                localStorage.setItem('anuncios', JSON.stringify(anuncios));
+                loadAnuncios();
+                alert('✅ Anuncio eliminado');
+            }
+        }
+
+        function openModalMaterial() {
+            // VALIDACIÓN: Solo profesores pueden subir materiales
+            if (userRole !== 'profesor') {
+                alert('❌ Acceso denegado. Solo los profesores pueden subir materiales.');
+                return;
+            }
+            
+            const HTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2><i class="fas fa-file-upload"></i> Subir Material</h2>
+                        <button type="button" class="close-btn" onclick="closeModal('modalMaterial')">&times;</button>
+                    </div>
+                    <form onsubmit="subirMaterial(event)">
+                        <div class="form-group">
+                            <label>Seleccionar Curso:</label>
+                            <select id="materialCursoSelect" required>
+                                <option value="">-- Seleccionar --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Nombre del Material:</label>
+                            <input type="text" id="materialNombre" placeholder="Ej: Diapositivas Tema 1" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Descripción:</label>
+                            <textarea id="materialDescripcion" placeholder="Breve descripción del material" rows="4"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-info-circle"></i> Simulación de Archivo</label>
+                            <input type="text" id="materialArchivo" placeholder="Ej: slides-tema1.pdf" value="documento.pdf" required>
+                            <small style="display: block; margin-top: 5px; color: #666;">En un sistema real, se subiría un archivo. Aquí guardamos solo la referencia.</small>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-upload"></i> Guardar Material
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            `;
+
+            const modal = document.getElementById('modalMaterial');
+            if (!modal) {
+                const newModal = document.createElement('div');
+                newModal.id = 'modalMaterial';
+                newModal.className = 'modal';
+                newModal.innerHTML = HTML;
+                document.body.appendChild(newModal);
+            } else {
+                modal.innerHTML = HTML;
+            }
+
+            document.getElementById('modalMaterial').classList.add('active');
+            updateSelectCursos('materialCursoSelect');
+        }
+
+        function subirMaterial(event) {
+            event.preventDefault();
+            
+            // VALIDACIÓN: Solo profesores
+            if (userRole !== 'profesor') {
+                alert('❌ Acceso denegado. Solo profesores pueden subir materiales.');
+                return;
+            }
+            
+            const cursoId = parseInt(document.getElementById('materialCursoSelect').value);
+            const nombre = document.getElementById('materialNombre').value;
+            const descripcion = document.getElementById('materialDescripcion').value;
+            const archivo = document.getElementById('materialArchivo').value;
+
+            if (!cursoId) {
+                alert('Por favor selecciona un curso');
+                return;
+            }
+
+            if (!materiales) materiales = [];
+
+            const material = {
+                id: Date.now(),
+                cursoId: cursoId,
+                nombre: nombre,
+                descripcion: descripcion,
+                archivo: archivo,
+                profesor: userEmail,
+                fecha: new Date().toLocaleDateString(),
+                tamaño: Math.floor(Math.random() * 5000) + 500 // Simulado
+            };
+
+            materiales.push(material);
+            localStorage.setItem('materiales', JSON.stringify(materiales));
+            alert('✅ Material guardado correctamente');
+            closeModal('modalMaterial');
+            loadMateriales();
+        }
+
+        function loadMateriales() {
+            if (!materiales) materiales = [];
+
+            const mesCursos = cursos.filter(c => c.profesor === userEmail);
+            const misMateriales = materiales.filter(m => mesCursos.some(c => c.id === m.cursoId));
+
+            const container = document.getElementById('materialesContainer');
+            if (misMateriales.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #999;">No hay materiales subidos. <button class="btn btn-primary btn-small" onclick="openModalMaterial()">Subir uno</button></p>';
+                return;
+            }
+
+            container.innerHTML = misMateriales.map(m => {
+                const curso = cursos.find(c => c.id === m.cursoId);
+                return `
+                    <div class="card" style="border-left: 4px solid #4CAF50;">
+                        <h5 style="margin: 0 0 5px 0; color: #333;"><i class="fas fa-file"></i> ${m.nombre}</h5>
+                        <small style="color: #666;"><i class="fas fa-book"></i> ${curso?.nombre || 'Curso desconocido'}</small><br>
+                        <small style="color: #999;"><i class="fas fa-calendar"></i> ${m.fecha}</small>
+                        ${m.descripcion ? `<p style="margin: 10px 0; color: #555; font-size: 0.9rem;">${m.descripcion}</p>` : ''}
+                        <small style="color: #999;"><i class="fas fa-database"></i> ${(m.tamaño/1024).toFixed(2)} KB</small><br>
+                        <button class="btn btn-success btn-small" style="margin-top: 10px;" onclick="alert('📥 Descargando: ${m.archivo}')">
+                            <i class="fas fa-download"></i> Descargar
+                        </button>
+                        <button class="btn btn-danger btn-small" style="margin-top: 10px;" onclick="eliminarMaterial(${m.id})">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function eliminarMaterial(id) {
+            // VALIDACIÓN: Solo profesores
+            if (userRole !== 'profesor') {
+                alert('❌ Acceso denegado. Solo profesores pueden eliminar materiales.');
+                return;
+            }
+            
+            if (confirm('¿Estás seguro de eliminar este material?')) {
+                materiales = materiales.filter(m => m.id !== id);
+                localStorage.setItem('materiales', JSON.stringify(materiales));
+                loadMateriales();
+                alert('✅ Material eliminado');
+            }
+        }
+
+        function loadReportes() {
+            // VALIDACIÓN: Solo profesores
+            if (userRole !== 'profesor') {
+                alert('❌ Acceso denegado. Solo profesores pueden ver reportes.');
+                return;
+            }
+            
+            const mesCursos = cursos.filter(c => c.profesor === userEmail);
+            const container = document.getElementById('reportesContainer');
+
+            let HTML = '<div style="display: grid; gap: 20px;">';
+
+            mesCursos.forEach(curso => {
+                const estudiantesAprobados = inscripciones.filter(i => i.cursoId === curso.id && i.estado === 'aprobado').length;
+                const tareasDelCurso = tareas.filter(t => t.curso === curso.id);
+                const entregasDelCurso = entregas.filter(e => tareasDelCurso.some(t => t.id === e.tareaId));
+
+                let promedio = 0;
+                let calificados = 0;
+                if (entregasDelCurso.length > 0) {
+                    const calificaciones = entregasDelCurso.filter(e => e.calificacion).map(e => e.calificacion);
+                    if (calificaciones.length > 0) {
+                        promedio = (calificaciones.reduce((a, b) => a + b, 0) / calificaciones.length).toFixed(2);
+                        calificados = calificaciones.length;
+                    }
+                }
+
+                HTML += `
+                    <div class="card" style="border-top: 3px solid #667eea; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                        <h4 style="margin-top: 0;">${curso.nombre}</h4>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 15px 0;">
+                            <div style="background: rgba(255,255,255,0.2); padding: 12px; border-radius: 5px;">
+                                <p style="margin: 0; font-size: 0.9rem; opacity: 0.8;">Estudiantes Aprobados</p>
+                                <h3 style="margin: 5px 0; font-size: 1.8rem;">${estudiantesAprobados}</h3>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.2); padding: 12px; border-radius: 5px;">
+                                <p style="margin: 0; font-size: 0.9rem; opacity: 0.8;">Tareas Creadas</p>
+                                <h3 style="margin: 5px 0; font-size: 1.8rem;">${tareasDelCurso.length}</h3>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.2); padding: 12px; border-radius: 5px;">
+                                <p style="margin: 0; font-size: 0.9rem; opacity: 0.8;">Entregas</p>
+                                <h3 style="margin: 5px 0; font-size: 1.8rem;">${entregasDelCurso.length}</h3>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.2); padding: 12px; border-radius: 5px;">
+                                <p style="margin: 0; font-size: 0.9rem; opacity: 0.8;">Promedio</p>
+                                <h3 style="margin: 5px 0; font-size: 1.8rem;">${promedio}%</h3>
+                            </div>
+                        </div>
+                        <small style="opacity: 0.9;">Tasa de Entrega: ${entregasDelCurso.length > 0 ? ((calificados/entregasDelCurso.length)*100).toFixed(0) : 0}%</small>
+                    </div>
+                `;
+            });
+
+            HTML += '</div>';
+
+            if (mesCursos.length === 0) {
+                HTML = '<p style="text-align: center; color: #999;">No tienes cursos creados. <a href="#" onclick="mostrarTabProfesor(\'cursos\')">Crear uno</a></p>';
+            }
+
+            container.innerHTML = HTML;
+        }
+
+        function openModalMensaje() {
+            // VALIDACIÓN: Solo profesores pueden enviar mensajes
+            if (userRole !== 'profesor') {
+                alert('❌ Acceso denegado. Solo los profesores pueden enviar mensajes a estudiantes.');
+                return;
+            }
+            
+            const mesCursos = cursos.filter(c => c.profesor === userEmail);
+            let opcionesCursos = '<option value="">-- Seleccionar --</option>';
+            mesCursos.forEach(c => {
+                opcionesCursos += `<option value="${c.id}">${c.nombre}</option>`;
+            });
+
+            const HTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2><i class="fas fa-envelope"></i> Nuevo Mensaje</h2>
+                        <button type="button" class="close-btn" onclick="closeModal('modalMensaje')">&times;</button>
+                    </div>
+                    <form onsubmit="enviarMensaje(event)">
+                        <div class="form-group">
+                            <label>Seleccionar Curso:</label>
+                            <select id="mensajeCursoSelect" required>
+                                ${opcionesCursos}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Tipo de Destinatario:</label>
+                            <select id="tipoDestinatario" required>
+                                <option value="todos">Todos los estudiantes</option>
+                                <option value="aprobados">Solo aprobados</option>
+                                <option value="pendientes">Solo pendientes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Asunto:</label>
+                            <input type="text" id="mensajeAsunto" placeholder="Asunto del mensaje" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Mensaje:</label>
+                            <textarea id="mensajeContenido" placeholder="Escribe tu mensaje..." rows="6" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane"></i> Enviar Mensaje
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            `;
+
+            const modal = document.getElementById('modalMensaje');
+            if (!modal) {
+                const newModal = document.createElement('div');
+                newModal.id = 'modalMensaje';
+                newModal.className = 'modal';
+                newModal.innerHTML = HTML;
+                document.body.appendChild(newModal);
+            } else {
+                modal.innerHTML = HTML;
+            }
+
+            document.getElementById('modalMensaje').classList.add('active');
+        }
+
+        function enviarMensaje(event) {
+            event.preventDefault();
+            
+            // VALIDACIÓN: Solo profesores
+            if (userRole !== 'profesor') {
+                alert('❌ Acceso denegado. Solo profesores pueden enviar mensajes.');
+                return;
+            }
+            
+            const cursoId = parseInt(document.getElementById('mensajeCursoSelect').value);
+            const tipo = document.getElementById('tipoDestinatario').value;
+            const asunto = document.getElementById('mensajeAsunto').value;
+            const contenido = document.getElementById('mensajeContenido').value;
+
+            if (!cursoId) {
+                alert('Por favor selecciona un curso');
+                return;
+            }
+
+            if (!mensajes) mensajes = [];
+
+            const mensaje = {
+                id: Date.now(),
+                cursoId: cursoId,
+                asunto: asunto,
+                contenido: contenido,
+                profesor: userEmail,
+                tipo: tipo,
+                fecha: new Date().toLocaleDateString(),
+                hora: new Date().toLocaleTimeString(),
+                leido: false
+            };
+
+            mensajes.push(mensaje);
+            localStorage.setItem('mensajes', JSON.stringify(mensajes));
+            alert('✅ Mensaje enviado a ' + (tipo === 'todos' ? 'todos los estudiantes' : tipo === 'aprobados' ? 'estudiantes aprobados' : 'estudiantes pendientes'));
+            closeModal('modalMensaje');
+            loadMensajes();
+        }
+
+        function loadMensajes() {
+            if (!mensajes) mensajes = [];
+
+            const mesCursos = cursos.filter(c => c.profesor === userEmail);
+            const misMensajes = mensajes.filter(m => mesCursos.some(c => c.id === m.cursoId));
+
+            const container = document.getElementById('mensajesContainer');
+            if (misMensajes.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #999;">No hay mensajes enviados. <button class="btn btn-primary btn-small" onclick="openModalMensaje()">Enviar uno</button></p>';
+                return;
+            }
+
+            container.innerHTML = misMensajes.map(m => {
+                const curso = cursos.find(c => c.id === m.cursoId);
+                let tipoLabel = m.tipo === 'todos' ? '👥 Todos' : m.tipo === 'aprobados' ? '✅ Aprobados' : '⏳ Pendientes';
+                return `
+                    <div class="card" style="border-left: 4px solid #2196F3;">
+                        <h5 style="margin: 0 0 5px 0; color: #333;">${m.asunto}</h5>
+                        <small style="color: #666;"><i class="fas fa-book"></i> ${curso?.nombre || 'Curso desconocido'} | ${tipoLabel}</small><br>
+                        <small style="color: #999;"><i class="fas fa-calendar"></i> ${m.fecha} ${m.hora}</small>
+                        <p style="margin: 10px 0; color: #555;">${m.contenido}</p>
+                        <button class="btn btn-danger btn-small" onclick="eliminarMensaje(${m.id})">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function eliminarMensaje(id) {
+            // VALIDACIÓN: Solo profesores
+            if (userRole !== 'profesor') {
+                alert('❌ Acceso denegado. Solo profesores pueden eliminar mensajes.');
+                return;
+            }
+            
+            if (confirm('¿Estás seguro de eliminar este mensaje?')) {
+                mensajes = mensajes.filter(m => m.id !== id);
+                localStorage.setItem('mensajes', JSON.stringify(mensajes));
+                loadMensajes();
+                alert('✅ Mensaje eliminado');
+            }
+        }
+
+        function loadAsistencia() {
+            // VALIDACIÓN: Solo profesores
+            if (userRole !== 'profesor') {
+                alert('❌ Acceso denegado. Solo profesores pueden gestionar asistencia.');
+                return;
+            }
+            
+            const mesCursos = cursos.filter(c => c.profesor === userEmail);
+            const container = document.getElementById('asistenciaContainer');
+
+            let HTML = '<div style="display: grid; gap: 20px;">';
+
+            mesCursos.forEach(curso => {
+                const estudiantesAprobados = inscripciones.filter(i => i.cursoId === curso.id && i.estado === 'aprobado').length;
+                HTML += `
+                    <div class="card">
+                        <h5 style="color: #667eea; margin-top: 0;">${curso.nombre}</h5>
+                        <p><strong>${estudiantesAprobados}</strong> estudiantes inscritos</p>
+                        <div style="background: #f5f5f5; padding: 15px; border-radius: 5px;">
+                            <button class="btn btn-primary" onclick="alert('📋 Marcar asistencia en: ${curso.nombre}')">
+                                <i class="fas fa-check-square"></i> Marcar Asistencia de Hoy
+                            </button>
+                        </div>
+                        <button class="btn btn-secondary btn-small" style="margin-top: 10px;" onclick="alert('📊 Ver historial de asistencia en: ${curso.nombre}')">
+                            <i class="fas fa-history"></i> Ver Historial
+                        </button>
+                    </div>
+                `;
+            });
+
+            HTML += '</div>';
+
+            if (mesCursos.length === 0) {
+                HTML = '<p style="text-align: center; color: #999;">No tienes cursos creados.</p>';
+            }
+
+            container.innerHTML = HTML;
+        }
+
+        // FUNCIONES PARA CALIFICACIONES
+
+        function loadCalificaciones() {
+            if (!calificaciones) calificaciones = [];
+
+            const tabla = document.getElementById('calificacionesTable');
+            const misInscripciones = inscripciones.filter(i => i.estudiante === userEmail && i.estado === 'aprobado');
+            const misCalificacionesCursos = calificaciones.filter(c => c.estudiante === userEmail);
+
+            if (misCalificacionesCursos.length === 0) {
+                tabla.innerHTML = `
+                    <tr>
+                        <td colspan="4" style="text-align: center; color: #999; padding: 30px;">
+                            📚 No hay calificaciones publicadas aún
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tabla.innerHTML = misCalificacionesCursos.map(c => {
+                const curso = cursos.find(cu => cu.id === c.cursoId);
+                let estado = '';
+                if (c.calificacion >= 60) {
+                    estado = '<span class="status-badge" style="background: #d1fae5; color: #065f46;">✅ Aprobado</span>';
+                } else {
+                    estado = '<span class="status-badge" style="background: #fee2e2; color: #7f1d1d;">❌ Reprobado</span>';
+                }
+                return `
+                    <tr>
+                        <td>${curso?.nombre || 'Curso desconocido'}</td>
+                        <td><strong>${c.calificacion}/100</strong></td>
+                        <td>${estado}</td>
+                        <td>${c.fecha}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function openModalPublicarNotas() {
+            // VALIDACIÓN: Solo profesores
+            if (userRole !== 'profesor') {
+                alert('❌ Acceso denegado. Solo profesores pueden publicar notas.');
+                return;
+            }
+
+            const mesCursos = cursos.filter(c => c.profesor === userEmail);
+            let opcionesCursos = '<option value="">-- Seleccionar --</option>';
+            mesCursos.forEach(c => {
+                opcionesCursos += `<option value="${c.id}">${c.nombre}</option>`;
+            });
+
+            const HTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2><i class="fas fa-star"></i> Publicar Nota</h2>
+                        <button type="button" class="close-btn" onclick="closeModal('modalPublicarNotas')">&times;</button>
+                    </div>
+                    <form onsubmit="publicarNota(event)">
+                        <div class="form-group">
+                            <label>Seleccionar Curso:</label>
+                            <select id="notaCursoSelect" required onchange="cargarEstudiantesPorCurso()">
+                                ${opcionesCursos}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Seleccionar Estudiante:</label>
+                            <select id="notaEstudianteSelect" required>
+                                <option value="">-- Seleccionar curso primero --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Calificación:</label>
+                            <input type="number" id="notaCalificacion" placeholder="0-100" min="0" max="100" required>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Publicar Nota
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            `;
+
+            const modal = document.getElementById('modalPublicarNotas');
+            if (!modal) {
+                const newModal = document.createElement('div');
+                newModal.id = 'modalPublicarNotas';
+                newModal.className = 'modal';
+                newModal.innerHTML = HTML;
+                document.body.appendChild(newModal);
+            } else {
+                modal.innerHTML = HTML;
+            }
+
+            document.getElementById('modalPublicarNotas').classList.add('active');
+        }
+
+        function cargarEstudiantesPorCurso() {
+            const cursoId = parseInt(document.getElementById('notaCursoSelect').value);
+            const select = document.getElementById('notaEstudianteSelect');
+            
+            if (!cursoId) {
+                select.innerHTML = '<option value="">-- Seleccionar curso primero --</option>';
+                return;
+            }
+
+            const estudiantesAprobados = inscripciones.filter(i => i.cursoId === cursoId && i.estado === 'aprobado');
+            let opciones = '<option value="">-- Seleccionar estudiante --</option>';
+            
+            estudiantesAprobados.forEach(e => {
+                opciones += `<option value="${e.estudiante}">${e.estudiante}</option>`;
+            });
+
+            select.innerHTML = opciones;
+        }
+
+        function publicarNota(event) {
+            event.preventDefault();
+
+            // VALIDACIÓN: Solo profesores
+            if (userRole !== 'profesor') {
+                alert('❌ Acceso denegado. Solo profesores pueden publicar notas.');
+                return;
+            }
+
+            const cursoId = parseInt(document.getElementById('notaCursoSelect').value);
+            const estudiante = document.getElementById('notaEstudianteSelect').value;
+            const calificacion = parseInt(document.getElementById('notaCalificacion').value);
+
+            if (!cursoId || !estudiante || !calificacion) {
+                alert('Por favor completa todos los campos');
+                return;
+            }
+
+            if (!calificaciones) calificaciones = [];
+
+            // Verificar si ya existe una nota para este estudiante en este curso
+            const notaExistente = calificaciones.findIndex(c => c.cursoId === cursoId && c.estudiante === estudiante);
+
+            const nota = {
+                id: Date.now(),
+                cursoId: cursoId,
+                estudiante: estudiante,
+                calificacion: calificacion,
+                profesor: userEmail,
+                fecha: new Date().toLocaleDateString(),
+                hora: new Date().toLocaleTimeString()
+            };
+
+            if (notaExistente >= 0) {
+                calificaciones[notaExistente] = nota;
+                alert('✅ Nota actualizada correctamente');
+            } else {
+                calificaciones.push(nota);
+                alert('✅ Nota publicada correctamente');
+            }
+
+            localStorage.setItem('calificaciones', JSON.stringify(calificaciones));
+            closeModal('modalPublicarNotas');
+            loadNotasPublicadas();
+            if (userRole === 'estudiante') {
+                loadCalificaciones();
+            }
+        }
+
+        function loadNotasPublicadas() {
+            if (!calificaciones) calificaciones = [];
+
+            const mesCursos = cursos.filter(c => c.profesor === userEmail);
+            const misNotas = calificaciones.filter(c => mesCursos.some(cu => cu.id === c.cursoId));
+
+            const tabla = document.getElementById('notasPublicadasTable');
+
+            if (misNotas.length === 0) {
+                tabla.innerHTML = `
+                    <tr>
+                        <td colspan="5" style="text-align: center; color: #999; padding: 30px;">
+                            📚 No hay notas publicadas aún. <button class="btn btn-primary btn-small" onclick="openModalPublicarNotas()">Publicar una</button>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tabla.innerHTML = misNotas.map(n => {
+                const curso = cursos.find(c => c.id === n.cursoId);
+                let estado = '';
+                if (n.calificacion >= 60) {
+                    estado = '<span class="status-badge" style="background: #d1fae5; color: #065f46;">✅ Aprobado</span>';
+                } else {
+                    estado = '<span class="status-badge" style="background: #fee2e2; color: #7f1d1d;">❌ Reprobado</span>';
+                }
+                return `
+                    <tr>
+                        <td>${curso?.nombre || 'Curso desconocido'}</td>
+                        <td>${n.estudiante}</td>
+                        <td><strong>${n.calificacion}/100</strong></td>
+                        <td>${n.fecha}</td>
+                        <td>
+                            <button class="btn btn-primary btn-small" onclick="openModalPublicarNotas()" style="margin-right: 5px;">
+                                <i class="fas fa-edit"></i> Editar
+                            </button>
+                            <button class="btn btn-danger btn-small" onclick="eliminarNota(${n.id})">
+                                <i class="fas fa-trash"></i> Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function eliminarNota(id) {
+            // VALIDACIÓN: Solo profesores
+            if (userRole !== 'profesor') {
+                alert('❌ Acceso denegado. Solo profesores pueden eliminar notas.');
+                return;
+            }
+
+            if (confirm('¿Estás seguro de eliminar esta nota?')) {
+                calificaciones = calificaciones.filter(c => c.id !== id);
+                localStorage.setItem('calificaciones', JSON.stringify(calificaciones));
+                loadNotasPublicadas();
+                alert('✅ Nota eliminada');
+            }
+        }
+
+        // Inicializar datos
+        let anuncios = JSON.parse(localStorage.getItem('anuncios')) || [];
+        let materiales = JSON.parse(localStorage.getItem('materiales')) || [];
+        let mensajes = JSON.parse(localStorage.getItem('mensajes')) || [];
+        let calificaciones = JSON.parse(localStorage.getItem('calificaciones')) || [];
+        let inscripciones = JSON.parse(localStorage.getItem('inscripciones')) || [];
+    </script>
+</body>
+</html>
